@@ -6,6 +6,7 @@
   ],
   "plugins": [
     "transform-decorators-legacy",
+    "babel-plugin-add-module-exports",
     ["fast-async", {
       "env": {
         "augmentObject": false,
