@@ -1,0 +1,61 @@
+import React from 'react';
+import { observer } from 'mobx-react';
+import { Button } from 'react-toolbox/lib/button';
+
+import { validateAndSave } from './validate';
+import { modelShape } from './schemaFormPropTypes';
+
+@observer class SaveButton extends React.Component {
+  onClick = async (e) => {
+    if (this.props.disabled) {
+      return;
+    }
+
+    if (typeof this.props.onClick === 'function') {
+      this.props.onClick(e);
+      if (e.isDefaultPrevented()) return;
+    }
+
+    const isValid = await validateAndSave(this.props.model, this.props.options, e);
+
+    if (isValid) {
+      if (typeof this.props.onSave === 'function') {
+        this.props.onSave(e);
+      }
+      return;
+    }
+
+    if (typeof this.props.onInvalid === 'function') {
+      this.props.onInvalid(e);
+    }
+  };
+
+  render() {
+    const { model, options, disabled, onClick, onSave, onInvalid, ...others } = this.props; // eslint-disable-line no-unused-vars
+    return (
+      <Button
+        raised
+        primary
+        flat={this.props.disabled}
+        onClick={this.onClick}
+        {...others}
+      />
+    );
+  }
+}
+
+SaveButton.propTypes = {
+  model: modelShape,
+  options: React.PropTypes.shape({
+    allowCreate: React.PropTypes.bool,
+    saveAll: React.PropTypes.bool,
+    skipPropertyBeingEdited: React.PropTypes.bool,
+    keepServerError: React.PropTypes.bool,
+  }),
+  onClick: React.PropTypes.func,
+  onSave: React.PropTypes.func,
+  onInvalid: React.PropTypes.func,
+  disabled: React.PropTypes.bool,
+};
+
+export default SaveButton;
