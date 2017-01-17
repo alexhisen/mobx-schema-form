@@ -6,15 +6,6 @@ import React from 'react';
 import { SchemaForm } from 'react-schema-form';
 import { observer } from 'mobx-react';
 
-import TextField from './TextField';
-import DateField from './DateField';
-import SwitchField from './SwitchField';
-import RadiosField from './RadiosField';
-import Fieldset from './Fieldset';
-import DropdownField from './DropdownField';
-import BoolLink from './BoolLink';
-import SliderField from './SliderField';
-
 import { getFieldKey } from './validate';
 import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
 
@@ -48,23 +39,39 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
   };
 
   render() {
-    // mapper is used to map types in form object, not schema object
-    const mapper = {
-      date: DateField,
-      text: TextField,
-      email: TextField,
-      password: TextField,
-      number: TextField,
-      tel: TextField,
-      textarea: TextField,
-      switch: SwitchField,
-      radios: RadiosField,
-      fieldset: Fieldset,
-      select: DropdownField,
-      link: BoolLink,
-      range: SliderField,
-      ...this.props.mapper,
-    };
+    let mapper;
+    if (this.props.mergeMapper === false) {
+      mapper = this.props.mapper;
+    } else {
+      /* eslint-disable global-require */
+      const TextField = require('./TextField');
+      const DateField = require('./DateField');
+      const SwitchField = require('./SwitchField');
+      const RadiosField = require('./RadiosField');
+      const Fieldset = require('./Fieldset');
+      const DropdownField = require('./DropdownField');
+      const BoolLink = require('./BoolLink');
+      const SliderField = require('./SliderField');
+      /* eslint-enable */
+
+      // mapper is used to map types in form object, not schema object
+      mapper = {
+        date: DateField,
+        text: TextField,
+        email: TextField,
+        password: TextField,
+        number: TextField,
+        tel: TextField,
+        textarea: TextField,
+        switch: SwitchField,
+        radios: RadiosField,
+        fieldset: Fieldset,
+        select: DropdownField,
+        link: BoolLink,
+        range: SliderField,
+        ...this.props.mapper,
+      };
+    }
 
     return (
       <SchemaForm
@@ -90,6 +97,7 @@ RTSchemaForm.propTypes = {
   /* actually a subset of formShape, no schema and some properties in formShape are copied from schema actually */
   form: React.PropTypes.arrayOf(formShape).isRequired,
   onModelChange: React.PropTypes.func,
+  mergeMapper: React.PropTypes.bool,
 };
 
 export default RTSchemaForm;

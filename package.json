@@ -5,9 +5,9 @@
   "main": "./lib",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
-    "test": "mocha --compilers js:babel-core/register --colors ./test/*.spec.js",
-    "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js",
-    "prepublish": "npm build"
+    "test": "mocha --compilers js:babel-core/register --colors ./test/*.spec.js --require ./test/setup.js",
+    "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js --require ./test/setup.js",
+    "prepublish": "npm build && npm test"
   },
   "dependencies": {
     "babel-polyfill": "^6.9.1",
@@ -31,13 +31,17 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.18.0",
     "chai": "^3.5.0",
+    "enzyme": "^2.7.0",
     "eslint": "^3.7.1",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.3.0",
     "fast-async": "6.0.34",
-    "mocha": "2.3.4"
+    "jsdom": "^9.9.1",
+    "mocha": "2.3.4",
+    "react-addons-test-utils": "^15.4.2",
+    "react-dom": "^15.3.2"
   },
   "peerDependencies": {
     "babel-polyfill": "^6.9.1",
