@@ -58,27 +58,31 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
         }
       }
       if (value) {
-        const valueAsString = value;
+        // TODO: Support commas as decimal separator based on locale?
+        // strip all extraneous characters:
+        const valueAsString = value.replace(/[^0-9.-]/g, '');
         if (!strict && valueAsString === '-') {
           // User just started typing a negative number
           this.setState({ valueAsString });
           return;
         }
-        // TODO: Support commas as decimal separator based on locale?
-        // strip commas from a pasted or pretty-formatted number, otherwise parseInt/Float won't work:
-        value = valueAsString.replace(/,/g, '');
-        if (value.indexOf('.') === -1 || this.props.form.schema.type.match(/integer/)) {
-          value = parseInt(value, 10);
+        const hasDecimal = (valueAsString.indexOf('.') !== -1);
+        if (hasDecimal && this.props.form.schema.type.match(/integer/)) {
+          // reject the decimal, don't update value
+          return;
+        }
+        if (!hasDecimal) {
+          value = parseInt(valueAsString, 10);
         } else {
-          if (!strict && (value === '.' || value === '-.')) {
+          if (!strict && (valueAsString === '.' || valueAsString === '-.')) {
             // User just started typing without a leading 0
             this.setState({ valueAsString });
             return;
           }
-          value = parseFloat(value);
+          value = parseFloat(valueAsString);
         }
         if (isNaN(value)) {
-          // reject invalid character, don't update value
+          // after stripping, there is nothing left, so reject invalid character, don't update value
           return;
         }
         if (!strict) {
