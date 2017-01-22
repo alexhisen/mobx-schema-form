@@ -48,15 +48,18 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
   onChangeValidate = (val, e) => {
     let value = (val && val.target) ? val.target.value : val;
 
+    const strict = (e.type === 'blur');
+
     if (this.props.form.schema && this.props.form.schema.type.match(/integer|number/) && typeof value !== 'number') {
-      if (!value || e.type === 'blur') {
+      if (!value || strict) {
         if (this.state.valueAsString) {
           // clear any temporary string representation
           this.setState({ valueAsString: '' });
         }
-      } else {
+      }
+      if (value) {
         const valueAsString = value;
-        if (valueAsString === '-') {
+        if (!strict && valueAsString === '-') {
           // User just started typing a negative number
           this.setState({ valueAsString });
           return;
@@ -67,7 +70,7 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
         if (value.indexOf('.') === -1 || this.props.form.schema.type.match(/integer/)) {
           value = parseInt(value, 10);
         } else {
-          if (value === '.' || value === '-.') {
+          if (!strict && (value === '.' || value === '-.')) {
             // User just started typing without a leading 0
             this.setState({ valueAsString });
             return;
@@ -78,8 +81,10 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
           // reject invalid character, don't update value
           return;
         }
-        // Update the string representation so it can be rendered for user input like 1. and 1.0
-        this.setState({ valueAsString });
+        if (!strict) {
+          // Update the string representation so it can be rendered for user input like 1. and 1.0
+          this.setState({ valueAsString });
+        }
       }
     } else if (val.target && this.props.form.schema && this.props.form.schema.type === 'boolean') {
       value = val.target.checked;
