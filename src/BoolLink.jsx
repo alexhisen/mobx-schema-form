@@ -9,10 +9,10 @@ class BoolLink extends React.Component {
   };
 
   render() {
-    let label = this.props.formField.titleMap[0];
+    let label = this.props.formField.titleMap[0].name ? this.props.formField.titleMap[0].name : this.props.formField.titleMap[0];
 
     if (this.props.value) {
-      label = this.props.formField.titleMap[1];
+      label = this.props.formField.titleMap[1].name ? this.props.formField.titleMap[1].name : this.props.formField.titleMap[1];
     }
 
     return (

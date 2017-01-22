@@ -5,7 +5,7 @@ import { formShape } from './schemaFormPropTypes';
 
 const DropdownField = (props) => {
   const { formField, value, ...others } = props;
-  const titleMap = formField.titleMap.map((item) => { return item.name ? { label: item.name, value: item.value } : item; });
+  const titleMap = formField.titleMap.map((item) => { return item.name ? { label: item.name, value: item.value, group: item.group } : item; });
   return (
     <Dropdown
       {...others}

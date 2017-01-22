@@ -5,12 +5,21 @@ import { formShape } from './schemaFormPropTypes';
 
 const SwitchField = (props) => {
   const { formField, value, error, ...others } = props; // eslint-disable-line no-unused-vars
+  let trueLabel;
+  let falseLabel;
+  if (formField.titleMap && formField.titleMap[0]) {
+    trueLabel = formField.titleMap[0].name ? formField.titleMap[0].value : formField.titleMap[0];
+    if (formField.titleMap[1]) {
+      falseLabel = formField.titleMap[1].name ? formField.titleMap[1].value : formField.titleMap[1];
+    }
+  }
+
   return (
     <div>
       <Switch
         {...others}
         checked={!!value}
-        label={value ? formField.titleMap[0] : formField.titleMap[1]}
+        label={value ? trueLabel : falseLabel}
         {...formField.props}
       />
       <abbr>{formField.description || ''}</abbr>
@@ -24,4 +33,4 @@ SwitchField.propTypes = {
   error: React.PropTypes.string,
 };
 
-export default asSchemaField(SwitchField, 'switch');
+export default asSchemaField(SwitchField);

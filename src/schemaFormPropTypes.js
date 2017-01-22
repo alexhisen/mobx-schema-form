@@ -4,23 +4,35 @@ import React from 'react';
 // https://github.com/yannickcr/eslint-plugin-react/issues/817
 
 export const formShape = React.PropTypes.shape({
-  key: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array]).isRequired,
+  key: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array]),
   type: React.PropTypes.string,
   title: React.PropTypes.string,
-  titleMap: React.PropTypes.array, /* TODO: spec as either an array of values or array of objects with name and value keys */
+  /* either an array of values or array of objects with name and value and possibly group keys */
+  titleMap: React.PropTypes.arrayOf(React.PropTypes.oneOfType([
+    React.PropTypes.any,
+    React.PropTypes.shape({
+      name: React.PropTypes.string.isRequired,
+      value: React.PropTypes.any.isRequired,
+      group: React.PropTypes.string,
+    }),
+  ])),
   placeholder: React.PropTypes.string,
   default: React.PropTypes.any,
   description: React.PropTypes.string,
   required: React.PropTypes.bool,
   validationMessage: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]),
   condition: React.PropTypes.string,
+  minLength: React.PropTypes.number,
+  maxLength: React.PropTypes.number,
+  minimum: React.PropTypes.number,
+  maximum: React.PropTypes.number,
+  items: React.PropTypes.array,
   schema: React.PropTypes.shape({
     type: React.PropTypes.string,
     default: React.PropTypes.any,
+    enum: React.PropTypes.array,
     format: React.PropTypes.string,
     pattern: React.PropTypes.string,
-    minimum: React.PropTypes.number,
-    maximum: React.PropTypes.number,
     /* Non-standard - allows multiple form fields to map to same model key: */
     modelKey: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.string]),
   }),
@@ -32,14 +44,15 @@ export const formShape = React.PropTypes.shape({
   step: React.PropTypes.number,
   tickLabelsStep: React.PropTypes.number,
   props: React.PropTypes.object, /* props passed as-is to the React-Toolbox component */
+  validations: React.PropTypes.arrayOf(React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.string])),
 }).isRequired;
 
 export const modelShape = React.PropTypes.shape({
   data: React.PropTypes.object.isRequired,
   dataErrors: React.PropTypes.object.isRequired,
-  saveNotification: React.PropTypes.shape({ active: React.PropTypes.bool.isRequired }).isRequired,
-  startEditing: React.PropTypes.func.isRequired,
-  stopEditing: React.PropTypes.func.isRequired,
+  saveNotification: React.PropTypes.shape({ active: React.PropTypes.bool.isRequired }),
+  startEditing: React.PropTypes.func,
+  stopEditing: React.PropTypes.func,
   status: React.PropTypes.shape({
     errors: React.PropTypes.array,
     isReady: React.PropTypes.bool,
@@ -47,8 +60,9 @@ export const modelShape = React.PropTypes.shape({
     isInProgress: React.PropTypes.bool,
     canSave: React.PropTypes.bool,
     hasChanges: React.PropTypes.bool,
-  }).isRequired,
+  }),
   fields: React.PropTypes.object, /* exists only while a SchemaForm is rendered */
+  validators: React.PropTypes.objectOf(React.PropTypes.func), /* may not exist until a SchemaForm is rendered */
 }).isRequired;
 
 export const mapperShape = React.PropTypes.objectOf(
@@ -57,3 +71,4 @@ export const mapperShape = React.PropTypes.objectOf(
     React.PropTypes.func,
   ]),
 );
+

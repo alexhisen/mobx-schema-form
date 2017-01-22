@@ -1,6 +1,6 @@
 import { utils } from 'react-schema-form';
 import { action } from 'mobx';
-import _ from 'lodash';
+import template from 'lodash.template';
 import ObjectPath from 'objectpath';
 
 /**
@@ -29,16 +29,25 @@ function getFieldKey(formField, asString = false) {
  * @param {Object} model - modelShape object
  */
 function getFieldValue(formField, model) {
-  let value = utils.selectOrSet(getFieldKey(formField), model.data);
+  const value = utils.selectOrSet(getFieldKey(formField), model.data);
 
   // check if there is a default value
   if (value === null || value === undefined) {
     if (formField.default !== undefined) {
-      value = formField.default;
-    } else if (formField.schema && formField.schema.default !== undefined) {
-      value = formField.schema.default;
-    } else if (formField.titleMap && formField.titleMap[0].value !== undefined) {
-      value = formField.titleMap[0].value;
+      return formField.default;
+    }
+    if (formField.schema && formField.schema.default !== undefined) {
+      return formField.schema.default;
+    }
+    if (!formField.titleMap && formField.schema && formField.schema.enum) {
+      // react-schema-form only does this for select and checkboxes form field types, not for radios, etc.
+      formField.titleMap = utils.enumToTitleMap(formField.schema.enum);
+    }
+    if (formField.titleMap && formField.titleMap[0].value !== undefined) {
+      return formField.titleMap[0].value;
+    }
+    if (formField.titleMap && formField.titleMap[0] !== undefined) {
+      return formField.titleMap[0];
     }
   }
 
@@ -46,12 +55,85 @@ function getFieldValue(formField, model) {
 }
 
 /**
+ * Takes a tv4-format error object and returns the string message
+ * applying the formField.validationMessage templates as appropriate
+ * @param {Object} validationError
+ * @param {Number|String} [validationError.code]
+ * @param {String} [validationError.message]
+ * @param {Object} formField formShape object
+ * @param {Object} model modelShape object
+ * @param {*} value
+ * @returns {String|null}
+ */
+function getValidationMessage(validationError, formField, model, value) {
+  if (!validationError) {
+    return null;
+  }
+
+  const errorCode = validationError.code || 'default';
+
+  if (formField.validationMessage) {
+    const context = {
+      ...formField,
+      code: errorCode,
+      error: validationError,
+      value,
+      model,
+    };
+    const str = formField.validationMessage[errorCode] ||
+      formField.validationMessage.default || formField.validationMessage;
+    let templateFunc;
+    if (typeof str === 'function') {
+      templateFunc = str;
+    } else {
+      templateFunc = template(str);
+      // cache the compiled function
+      if (typeof formField.validationMessage === 'object') {
+        formField.validationMessage[errorCode] = templateFunc;
+      } else {
+        formField.validationMessage = templateFunc;
+      }
+    }
+    return templateFunc(context);
+  }
+
+  return validationError.message;
+}
+
+function runCustomValidations(formField, model, value) {
+  if (!formField.validations || formField.validations.length === 0) {
+    return null;
+  }
+  let validator;
+  let result;
+  for (let i = 0; i < formField.validations.length; i++) {
+    validator = formField.validations[i];
+    if (typeof validator === 'string') {
+      validator = model.validators[validator];
+    }
+    if (typeof validator !== 'function') {
+      throw new Error(`Undefined validator in ${formField.key}: ${formField.validations[i]}`);
+    }
+    result = validator(formField, model, value);
+    if (result) {
+      if (typeof result === 'object' && !result.code) {
+        continue;
+      }
+      return result;
+    }
+  }
+  return null;
+}
+
+
+/**
  * If value is provided, updates model.data with it and validates the value
  * and returns the errorMessage string if any plus places it into model.dataErrors.
  * Validation is done using react-schema-form validate mechanism
- * with added validationMessage codes/templates strings handling like in the angular version of schema-form.
+ * with added validationMessage codes/templates strings handling like in the angular version of schema-form
+ * (null-valued string-type fields are also handled correctly, whereas react-schema-form only handles number-type nulls),
+ * plus with custom validations defined in the formField - see runCustomValidations().
  * If value is undefined, just sets the corresponding model.dataErrors key to null.
- * null-valued string-type fields are also handled correctly, whereas react-schema-form only handles number-type nulls
  * @param {Object} formField - formShape object
  * @param {Object} model - modelShape object
  * @param {*} [value]
@@ -68,15 +150,15 @@ function validateField(formField, model, value) {
     const validationResult = utils.validate(formField, validationValue);
 
     if (validationResult.error) {
-      const errorCode = validationResult.error.code || 'default';
-
-      if (formField.validationMessage) {
-        const str = formField.validationMessage[errorCode] ||
-          formField.validationMessage.default || formField.validationMessage;
-        const template = _.template(str);
-        errorMessage = template(formField);
-      } else {
-        errorMessage = validationResult.error.message;
+      errorMessage = getValidationMessage(validationResult.error, formField, model, value);
+    } else {
+      const validationError = runCustomValidations(formField, model, value);
+      if (validationError) {
+        if (validationError.code) {
+          errorMessage = getValidationMessage(validationError, formField, model, value);
+        } else {
+          errorMessage = validationError;
+        }
       }
     }
   }
@@ -149,4 +231,4 @@ async function validateAndSave(model, options, e) {
   return isValid;
 }
 
-export { getFieldKey, getFieldValue, validateField, validateForm, validateAndSave };
+export { getFieldKey, getFieldValue, getValidationMessage, validateField, validateForm, validateAndSave };

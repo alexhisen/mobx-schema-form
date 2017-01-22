@@ -21,4 +21,4 @@ CheckboxField.propTypes = {
   error: React.PropTypes.string,
 };
 
-export default asSchemaField(CheckboxField, 'checkbox');
+export default asSchemaField(CheckboxField);

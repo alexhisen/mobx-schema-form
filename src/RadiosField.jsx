@@ -5,13 +5,13 @@ import { formShape } from './schemaFormPropTypes';
 
 const RadiosField = (props) => {
   const { formField, value, name, ...others } = props;
-  const items = formField.titleMap.map((item) => {
+  const items = (formField.titleMap || formField.schema.enum).map((item) => {
     return (
       <RadioButton
         name={name}
-        label={item.name}
-        value={item.value}
-        key={item.value}
+        label={item.name ? item.name : item}
+        value={item.name ? item.value : item}
+        key={item.name ? item.value : item}
       />
     );
   });

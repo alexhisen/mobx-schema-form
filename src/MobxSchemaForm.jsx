@@ -9,9 +9,15 @@ import { observer } from 'mobx-react';
 import { getFieldKey } from './validate';
 import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
 
-@observer class RTSchemaForm extends React.Component {
+@observer class MobxSchemaForm extends React.Component {
   componentWillMount() {
     this.props.model.fields = {};
+
+    const options = this.props.options || this.props.option;
+    if (options && options.validators) {
+      // merge to allow different instances of MobxSchemaForm to maintain their own validators in the store
+      this.props.model.validators = Object.assign((this.props.model.validators || {}), options.validators);
+    }
   }
 
   componentWillUnmount() {
@@ -80,12 +86,13 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
         form={this.props.form}
         model={this.props.model}
         onModelChange={this.onModelChange}
+        option={this.props.options || this.props.option}
       />
     );
   }
 }
 
-RTSchemaForm.propTypes = {
+MobxSchemaForm.propTypes = {
   mapper: mapperShape,
   model: modelShape,
   schema: React.PropTypes.shape({
@@ -94,10 +101,22 @@ RTSchemaForm.propTypes = {
     properties: React.PropTypes.object.isRequired, /* each key has the schema portion of formShape */
     required: React.PropTypes.array,
   }),
-  /* actually a subset of formShape, no schema and some properties in formShape are copied from schema actually */
-  form: React.PropTypes.arrayOf(formShape).isRequired,
+  /* actually a subset of formShape, no schema and some properties in formShape are copied from schema */
+  form: React.PropTypes.arrayOf(React.PropTypes.oneOfType([React.PropTypes.string, formShape])),
+  options: React.PropTypes.shape({
+    suppressPropertyTitles: React.PropTypes.bool,
+    /* actually a subset of formShape, no schema and some properties in formShape are copied from schema */
+    formDefaults: formShape,
+    validators: React.PropTypes.objectOf(React.PropTypes.func),
+  }),
+  /* @deprecated For compatibility with react-schema-form */
+  option: React.PropTypes.shape({
+    suppressPropertyTitles: React.PropTypes.bool,
+    formDefaults: formShape,
+    validators: React.PropTypes.objectOf(React.PropTypes.func),
+  }),
   onModelChange: React.PropTypes.func,
   mergeMapper: React.PropTypes.bool,
 };
 
-export default RTSchemaForm;
+export default MobxSchemaForm;
