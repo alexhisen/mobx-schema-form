@@ -2,7 +2,7 @@ import React from 'react';
 import { utils } from 'react-schema-form';
 import { observer } from 'mobx-react';
 import { action } from 'mobx';
-import { getFieldKey, getFieldValue, validateField, getValidationMesage } from './validate';
+import { getFieldKey, getFieldValue, validateField, getValidationMessage } from './validate';
 import { modelShape, formShape, mapperShape } from './schemaFormPropTypes';
 
 const asSchemaField = (ComposedComponent, fieldType) => observer(class extends React.Component {
@@ -158,7 +158,7 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
     let error = utils.selectOrSet(this.getKey(), model.dataErrors);
     if (typeof error === 'object') {
       // Convert server-returned error object in tv4 format to proper validationMessage string:
-      error = getValidationMesage(error, form, model, value);
+      error = getValidationMessage(error, form, model, value);
     }
 
     const composedComponent = (
