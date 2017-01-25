@@ -48,7 +48,7 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
   onChangeValidate = (val, e) => {
     let value = (val && val.target) ? val.target.value : val;
 
-    const strict = (e.type === 'blur');
+    const strict = (e && e.type === 'blur');
 
     if (this.props.form.schema && this.props.form.schema.type.match(/integer|number/) && typeof value !== 'number') {
       if (!value || strict) {
