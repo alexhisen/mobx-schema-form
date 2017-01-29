@@ -82,6 +82,10 @@ function getValidationMessage(validationError, formField, model, value) {
     };
     const str = formField.validationMessage[errorCode] ||
       formField.validationMessage.default || formField.validationMessage;
+    if (typeof str === 'object') {
+      // validationMessage object has no default and no match for this code
+      return validationError.message;
+    }
     let templateFunc;
     if (typeof str === 'function') {
       templateFunc = str;
