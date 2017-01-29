@@ -13,7 +13,7 @@ const TextField = (props) => {
       multiline={formField.type === 'textarea'}
       label={formField.description || formField.title}
       hint={formField.placeholder || formField.title}
-      maxLength={formField.maxLength}
+      maxLength={formField.maxlength}
       {...formField.props}
     />
   );

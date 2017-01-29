@@ -22,8 +22,8 @@ export const formShape = React.PropTypes.shape({
   required: React.PropTypes.bool,
   validationMessage: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]),
   condition: React.PropTypes.string,
-  minLength: React.PropTypes.number,
-  maxLength: React.PropTypes.number,
+  minlength: React.PropTypes.number, // Note that schema.minLength and maxLength are copied to
+  maxlength: React.PropTypes.number, // formField.minlength and maxlength (lowercase!)
   minimum: React.PropTypes.number,
   maximum: React.PropTypes.number,
   items: React.PropTypes.array,
