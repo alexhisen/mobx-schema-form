@@ -52,6 +52,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
       /* eslint-disable global-require */
       const TextField = require('./TextField');
       const DateField = require('./DateField');
+      const CheckboxField = require('./CheckboxField');
       const SwitchField = require('./SwitchField');
       const RadiosField = require('./RadiosField');
       const Fieldset = require('./Fieldset');
@@ -69,6 +70,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
         number: TextField,
         tel: TextField,
         textarea: TextField,
+        checkbox: CheckboxField,
         switch: SwitchField,
         radios: RadiosField,
         fieldset: Fieldset,
