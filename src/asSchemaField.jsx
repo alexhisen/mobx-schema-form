@@ -90,7 +90,7 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
           this.setState({ valueAsString });
         }
       }
-    } else if (val.target && this.props.form.schema && this.props.form.schema.type === 'boolean') {
+    } else if (val && val.target && this.props.form.schema && this.props.form.schema.type === 'boolean') {
       value = val.target.checked;
     }
 
