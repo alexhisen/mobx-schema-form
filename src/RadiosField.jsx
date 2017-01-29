@@ -4,7 +4,7 @@ import asSchemaField from './asSchemaField';
 import { formShape } from './schemaFormPropTypes';
 
 const RadiosField = (props) => {
-  const { formField, value, name, ...others } = props;
+  const { formField, name, ...others } = props;
   const items = (formField.titleMap || formField.schema.enum).map((item) => {
     return (
       <RadioButton
@@ -20,7 +20,6 @@ const RadiosField = (props) => {
     <RadioGroup
       {...others}
       name={name}
-      value={value}
       {...props.formField.props}
     >
       {items}
@@ -30,7 +29,6 @@ const RadiosField = (props) => {
 
 RadiosField.propTypes = {
   formField: formShape,
-  value: React.PropTypes.number,
   name: React.PropTypes.string,
 };
 

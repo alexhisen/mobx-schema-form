@@ -4,14 +4,13 @@ import asSchemaField from './asSchemaField';
 import { formShape } from './schemaFormPropTypes';
 
 const DropdownField = (props) => {
-  const { formField, value, ...others } = props;
+  const { formField, ...others } = props;
   const titleMap = formField.titleMap.map((item) => { return item.name ? { label: item.name, value: item.value, group: item.group } : item; });
   return (
     <Dropdown
       {...others}
       label={formField.description}
       source={titleMap}
-      value={value}
       {...formField.props}
     />
   );
@@ -19,7 +18,6 @@ const DropdownField = (props) => {
 
 DropdownField.propTypes = {
   formField: formShape,
-  value: React.PropTypes.number,
 };
 
 export default asSchemaField(DropdownField, 'dropdown');
