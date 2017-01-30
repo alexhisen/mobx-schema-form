@@ -7,7 +7,7 @@ const SliderField = (props) => {
   const { formField, value, ...others } = props;
   const min = formField.min !== 0 ? formField.min || formField.schema.minimum : 0;
   const max = formField.max || formField.schema.maximum;
-  const defaultValue = max < min ? min : (min + (max - min)) / 2;
+  const defaultValue = max < min ? min : (min + ((max - min) / 2));
 
   // FUTURE TODO: Better support or warning if ticksLabelStep=2, step=1 but max-min is not even
   let tickLabels = null;
