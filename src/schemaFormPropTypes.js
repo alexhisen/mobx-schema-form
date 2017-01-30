@@ -43,6 +43,7 @@ export const formShape = React.PropTypes.shape({
   max: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
   step: React.PropTypes.number,
   tickLabelsStep: React.PropTypes.number,
+  tickLabelsFormat: React.PropTypes.func,
   props: React.PropTypes.object, /* props passed as-is to the React-Toolbox component */
   validations: React.PropTypes.arrayOf(React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.string])),
 }).isRequired;

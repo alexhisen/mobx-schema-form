@@ -28,7 +28,7 @@ const SliderField = (props) => {
         <div style={{ width: `calc(100% - ${sliderKnobSize})` }}>
           <ol style={{ width: `${stepsStretch}%`, marginLeft: `calc(-${halfStretch}% + (${sliderKnobSize} / 2))` }}>
             {steps.map((step) => {
-              return <li key={step}>{step}</li>;
+              return <li key={step}>{typeof formField.tickLabelsFormat === 'function' ? formField.tickLabelsFormat(step) : step}</li>;
             })}
           </ol>
         </div>
