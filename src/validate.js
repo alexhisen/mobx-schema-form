@@ -135,7 +135,7 @@ function runCustomValidations(formField, model, value) {
  * and returns the errorMessage string if any plus places it into model.dataErrors.
  * Validation is done using react-schema-form validate mechanism
  * with added validationMessage codes/templates strings handling like in the angular version of schema-form
- * (null-valued string-type fields are also handled correctly, whereas react-schema-form only handles number-type nulls),
+ * (null-valued number and string-type fields regardless of form-type are also handled correctly),
  * plus with custom validations defined in the formField - see runCustomValidations().
  * If value is undefined, just sets the corresponding model.dataErrors key to null.
  * @param {Object} formField - formShape object
@@ -148,7 +148,7 @@ function validateField(formField, model, value) {
 
   if (value !== undefined) {
     let validationValue = value;
-    if (value === null && formField.schema && formField.schema.type.match(/string/)) {
+    if (value === null && formField.schema && formField.schema.type.match(/string|number|integer/)) {
       validationValue = undefined;
     }
     const validationResult = utils.validate(formField, validationValue);
