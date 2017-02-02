@@ -54,6 +54,7 @@ export const modelShape = React.PropTypes.shape({
   saveNotification: React.PropTypes.shape({ active: React.PropTypes.bool.isRequired }),
   startEditing: React.PropTypes.func,
   stopEditing: React.PropTypes.func,
+  getSavedData: React.PropTypes.func,
   status: React.PropTypes.shape({
     errors: React.PropTypes.array,
     isReady: React.PropTypes.bool,

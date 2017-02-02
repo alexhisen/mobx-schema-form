@@ -32,11 +32,17 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
   }
 
   componentWillUnmount() {
-    // clear the validation error on the field if any
-    action(() => {
-      validateField(this.props.form, this.props.model);
-      this.props.onChange(this.props.form);
-    })();
+    const key = this.getKey();
+    const hasError = !!utils.selectOrSet(key, this.props.model.dataErrors);
+    if (hasError && this.props.model.getSavedData) {
+      // reset the field to known good value and clear the validation error on the field
+      action(() => {
+        const value = utils.selectOrSet(key, this.props.model.getSavedData());
+        utils.selectOrSet(key, this.props.model.data, value);
+        utils.selectOrSet(key, this.props.model.dataErrors, null);
+        this.props.onChange(this.props.form);
+      })();
+    }
   }
 
   /**
