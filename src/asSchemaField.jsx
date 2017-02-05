@@ -32,11 +32,11 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
   }
 
   componentWillUnmount() {
-    const key = this.getKey();
-    const hasError = !!utils.selectOrSet(key, this.props.model.dataErrors);
+    const hasError = !!this.getError();
     if (hasError && this.props.model.getSavedData) {
       // reset the field to known good value and clear the validation error on the field
       action(() => {
+        const key = this.getKey();
         const value = utils.selectOrSet(key, this.props.model.getSavedData());
         utils.selectOrSet(key, this.props.model.data, value);
         utils.selectOrSet(key, this.props.model.dataErrors, null);
@@ -102,7 +102,7 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
 
     if (value === undefined) value = null;
 
-    const hasError = !!utils.selectOrSet(this.getKey(), this.props.model.dataErrors);
+    const hasError = !!this.getError();
 
     if (this.beingEdited && !hasError && !this.valueEntered && this.props.form.type.match(/text|textarea|email|tel|number|password/i)) {
       action(() => {
@@ -139,11 +139,12 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
     if (this.props.form.type.match(/text|textarea|email|tel|number|password/i)) {
       const value = (e && e.target) ? e.target.value : e;
 
-      // if user deletes a previous value, also run validation
-      if (value || this.initialValue) {
+      // if user deletes a previous value or there was a previous error, also run validation
+      const hasError = !!this.getError();
+      if (value || this.initialValue || hasError) {
         const trimmed = value.trim();
 
-        if (value !== trimmed || !this.valueEntered || this.initialValue || this.state.valueAsString) {
+        if (value !== trimmed || !this.valueEntered || this.initialValue || hasError || this.state.valueAsString) {
           this.valueEntered = true;
           this.onChangeValidate(trimmed, e);
         }
@@ -162,6 +163,10 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
     return this.state.valueAsString || getFieldValue(this.props.form, this.props.model);
   };
 
+  getError = () => {
+    return utils.selectOrSet(this.getKey(), this.props.model.dataErrors);
+  };
+
   render() {
     const { form, model, mapper } = this.props;
     if (form.mobxCondition && eval(form.mobxCondition) === false) { // eslint-disable-line no-eval
@@ -170,7 +175,7 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
 
     const value = this.getValue();
 
-    let error = utils.selectOrSet(this.getKey(), model.dataErrors);
+    let error = this.getError();
     if (typeof error === 'object') {
       // Convert server-returned error object in tv4 format to proper validationMessage string:
       error = getValidationMessage(error, form, model, value);
