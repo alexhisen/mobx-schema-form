@@ -167,6 +167,7 @@ function validateField(formField, model, value) {
     }
   }
 
+
   action(() => {
     // update value
     if (value !== undefined) {
@@ -179,7 +180,7 @@ function validateField(formField, model, value) {
 
     // update error
     utils.selectOrSet(
-      getFieldKey(formField),
+      getFieldKey(formField)[0], // for nested props. e.g. if type is array of autocmpletes
       model.dataErrors,
       errorMessage,
     );
