@@ -181,7 +181,7 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
   };
 
   render() {
-    const { form, model, mapper, builder } = this.props;
+    const { form, model, mapper } = this.props;
     if (form.mobxCondition && eval(form.mobxCondition) === false) { // eslint-disable-line no-eval
       return null;
     }
@@ -206,9 +206,6 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
         onChange={this.onChangeValidate}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
-        model={model}
-        builder={builder}
-        mapper={mapper}
       />
     );
 
@@ -229,7 +226,9 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
     model: modelShape,
     onChange: PropTypes.func,
     mapper: mapperShape,
+    /* Not used:
     builder: React.PropTypes.func,
+    */
   };
 
   static displayName = 'SchemaField';
