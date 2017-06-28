@@ -18,7 +18,7 @@
     "objectpath": "^1.2.1",
     "react": "^15.3.2",
     "react-schema-form": "^0.3.1",
-    "react-toolbox": "^1.3.0 || ^2.0.0 || 2.0.0-beta.5",
+    "react-toolbox": "^1.3.0 || ^2.0.0 || ^2.0.0-beta.10",
     "sugar": "^2.0.1"
   },
   "devDependencies": {
@@ -27,7 +27,7 @@
     "babel-eslint": "^6.1.2",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-preset-es2015": "6.3.13",
+    "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.18.0",
@@ -40,7 +40,7 @@
     "eslint-plugin-react": "^6.3.0",
     "fast-async": "6.0.34",
     "jsdom": "^9.9.1",
-    "mocha": "2.3.4",
+    "mocha": "^2.3.4",
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.3.2"
   },
@@ -51,7 +51,7 @@
     "mobx-react": "^3.5.0 || ^4.0.0",
     "mobx-form-store": "^1.0.5",
     "react": "^15.3.2",
-    "react-toolbox": "^1.3.0 || ^2.0.0 || 2.0.0-beta.5"
+    "react-toolbox": "^1.3.0 || ^2.0.0 || ^2.0.0-beta.10"
   },
   "files": [
     "lib",
