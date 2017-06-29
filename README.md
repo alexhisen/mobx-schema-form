@@ -8,7 +8,7 @@ https://alexhisen.gitbooks.io/mobx-forms/
 
 mobx-schema-form renders form widgets \(by default Material Design\) based on schema and form definition in [json-schema-form](https://github.com/json-schema-form/json-schema-form/wiki/Documentation) format. Includes intelligent real-time validation and display of validation error message in each widget.
 
-mobx-schema-form is a wrapper around [react-schema-form](https://github.com/networknt/react-schema-form). By default, mobx-schema-form uses [React-Toolbox](http://react-toolbox.com/) widgets instead of material-ui and wires up the widgets to work with [MobX FormStore](https://alexhisen.gitbooks.io/mobx-forms/formstore-overview.html). It also adds some improvements primarily in the area of validation.
+mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [react-schema-form](https://github.com/networknt/react-schema-form). By default, mobx-schema-form uses [React-Toolbox](http://react-toolbox.com/) widgets instead of material-ui and wires up the widgets to work with [MobX FormStore](https://alexhisen.gitbooks.io/mobx-forms/formstore-overview.html). It also adds some improvements primarily in the area of validation.
 
 ## Features
 
@@ -21,6 +21,7 @@ mobx-schema-form is a wrapper around [react-schema-form](https://github.com/netw
 * Fields that are currently not rendered \(based on their conditions\) are omitted from form-wide validation.
 * In addition to the built-in schema/[tv4](https://github.com/geraintluff/tv4)-based validation, supports custom validations and server-returned validation errors.
 * Values from text, etc input fields have their white space trimmed on blur and non-numeric characters cannot be entered into form fields with schema type of numeric/integer \(but negative integers and decimals such as 1.01 can still be keyed-in correctly\).
+* Radios or Dropdowns can be used for nullable Boolean values with automatic datatype conversion from strings such as 'off, no, false' to false and empty strings to null.
 
 ## Requirements
 
@@ -91,6 +92,6 @@ const schemaJson = {
 }
 ```
 
-> Note that MobxSchemaForm uses the same props as react-schema-form's SchemaForm, which it wraps, except what react-schema-form calls model is actually model.data in mobx-schema-form.
+> Note that MobxSchemaForm uses the same props as react-schema-form's SchemaForm, except what react-schema-form calls model is actually model.data in mobx-schema-form. It also supports 'option' for compatibility with SchemaForm, though the correct form in MobxSchemaForm is 'options' plural.
 
 

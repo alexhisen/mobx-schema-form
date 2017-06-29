@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
@@ -35,10 +36,10 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
 
 Fieldset.propTypes = {
   form: formShape,
-  builder: React.PropTypes.func,
+  builder: PropTypes.func,
   model: modelShape,
   mapper: mapperShape,
-  onChange: React.PropTypes.func,
+  onChange: PropTypes.func,
 };
 
 export default Fieldset;

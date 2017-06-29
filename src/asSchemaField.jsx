@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import { utils } from 'react-schema-form';
+import utils from 'react-schema-form/lib/utils';
 import { observer } from 'mobx-react';
 import { action } from 'mobx';
 import { getFieldKey, getFieldValue, validateField, getValidationMessage } from './validate';
@@ -223,10 +224,10 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
   static propTypes = {
     form: formShape,
     model: modelShape,
-    onChange: React.PropTypes.func,
+    onChange: PropTypes.func,
     mapper: mapperShape,
     /* Not used:
-    builder: React.PropTypes.func,
+    builder: PropTypes.func,
     */
   };
 

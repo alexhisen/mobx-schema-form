@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { RadioGroup, RadioButton } from 'react-toolbox/lib/radio';
 import asSchemaField from './asSchemaField';
@@ -34,11 +35,11 @@ const RadiosField = (props) => {
 
 RadiosField.propTypes = {
   formField: formShape,
-  name: React.PropTypes.string,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
-    React.PropTypes.bool,
+  name: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool,
   ]),
 };
 

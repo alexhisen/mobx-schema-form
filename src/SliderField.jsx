@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Slider from 'react-toolbox/lib/slider';
 import asSchemaField from './asSchemaField';
@@ -58,7 +59,7 @@ const SliderField = (props) => {
 
 SliderField.propTypes = {
   formField: formShape,
-  value: React.PropTypes.number,
+  value: PropTypes.number,
 };
 
 export default asSchemaField(SliderField, 'slider');

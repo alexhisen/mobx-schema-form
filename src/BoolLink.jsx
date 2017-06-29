@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ActionLink from 'react-toolbox/lib/link';
 import asSchemaField from './asSchemaField';
@@ -23,8 +24,8 @@ class BoolLink extends React.Component {
 
 BoolLink.propTypes = {
   formField: formShape,
-  value: React.PropTypes.bool,
-  onChange: React.PropTypes.func,
+  value: PropTypes.bool,
+  onChange: PropTypes.func,
 };
 
 export default asSchemaField(BoolLink);

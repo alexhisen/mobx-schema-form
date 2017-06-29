@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import DatePicker from 'react-toolbox/lib/date_picker';
 import { Date as SugarDate } from 'sugar';
@@ -25,7 +26,7 @@ const DateField = (props) => {
 
 DateField.propTypes = {
   formField: formShape,
-  readOnly: React.PropTypes.bool,
+  readOnly: PropTypes.bool,
 };
 
 export default asSchemaField(DateField, 'datepicker');

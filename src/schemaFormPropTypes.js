@@ -1,76 +1,77 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 // Unfortunately eslint-plugin-react doesn't support validating against imported shapes:
 // https://github.com/yannickcr/eslint-plugin-react/issues/817
 
-export const formShape = React.PropTypes.shape({
-  key: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array]),
-  type: React.PropTypes.string,
-  title: React.PropTypes.string,
+export const formShape = PropTypes.shape({
+  key: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  type: PropTypes.string,
+  title: PropTypes.string,
   /* either an array of values or array of objects with name and value and possibly group keys */
-  titleMap: React.PropTypes.arrayOf(React.PropTypes.oneOfType([
-    React.PropTypes.any,
-    React.PropTypes.shape({
-      name: React.PropTypes.string.isRequired,
-      value: React.PropTypes.any.isRequired,
-      group: React.PropTypes.string,
+  titleMap: PropTypes.arrayOf(PropTypes.oneOfType([
+    PropTypes.any,
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.any.isRequired,
+      group: PropTypes.string,
     }),
   ])),
-  placeholder: React.PropTypes.string,
-  default: React.PropTypes.any,
-  description: React.PropTypes.string,
-  required: React.PropTypes.bool,
-  validationMessage: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.object]),
-  condition: React.PropTypes.string,
-  minlength: React.PropTypes.number, // Note that schema.minLength and maxLength are copied to
-  maxlength: React.PropTypes.number, // formField.minlength and maxlength (lowercase!)
-  minimum: React.PropTypes.number,
-  maximum: React.PropTypes.number,
-  items: React.PropTypes.array,
-  schema: React.PropTypes.shape({
-    type: React.PropTypes.string,
-    default: React.PropTypes.any,
-    enum: React.PropTypes.array,
-    format: React.PropTypes.string,
-    pattern: React.PropTypes.string,
+  placeholder: PropTypes.string,
+  default: PropTypes.any,
+  description: PropTypes.string,
+  required: PropTypes.bool,
+  validationMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  condition: PropTypes.string,
+  minlength: PropTypes.number, // Note that schema.minLength and maxLength are copied to
+  maxlength: PropTypes.number, // formField.minlength and maxlength (lowercase!)
+  minimum: PropTypes.number,
+  maximum: PropTypes.number,
+  items: PropTypes.array,
+  schema: PropTypes.shape({
+    type: PropTypes.string,
+    default: PropTypes.any,
+    enum: PropTypes.array,
+    format: PropTypes.string,
+    pattern: PropTypes.string,
     /* Non-standard - allows multiple form fields to map to same model key: */
-    modelKey: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.string]),
+    modelKey: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   }),
   /* The rest are non-SchemaForm-standard props */
-  mobxCondition: React.PropTypes.string, /* only used in FieldSet right now for a mobx-reactive condition */
-  className: React.PropTypes.string,
-  min: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-  max: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-  step: React.PropTypes.number,
-  tickLabelsStep: React.PropTypes.number,
-  tickLabelsFormat: React.PropTypes.func,
-  props: React.PropTypes.object, /* props passed as-is to the React-Toolbox component */
-  validations: React.PropTypes.arrayOf(React.PropTypes.oneOfType([React.PropTypes.func, React.PropTypes.string])),
+  mobxCondition: PropTypes.string, /* only used in FieldSet right now for a mobx-reactive condition */
+  className: PropTypes.string,
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  step: PropTypes.number,
+  tickLabelsStep: PropTypes.number,
+  tickLabelsFormat: PropTypes.func,
+  props: PropTypes.object, /* props passed as-is to the React-Toolbox component */
+  validations: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.string])),
 }).isRequired;
 
-export const modelShape = React.PropTypes.shape({
-  data: React.PropTypes.object.isRequired,
-  dataErrors: React.PropTypes.object.isRequired,
-  saveNotification: React.PropTypes.shape({ active: React.PropTypes.bool.isRequired }),
-  startEditing: React.PropTypes.func,
-  stopEditing: React.PropTypes.func,
-  getSavedData: React.PropTypes.func,
-  status: React.PropTypes.shape({
-    errors: React.PropTypes.array,
-    isReady: React.PropTypes.bool,
-    isReadOnly: React.PropTypes.bool,
-    isInProgress: React.PropTypes.bool,
-    canSave: React.PropTypes.bool,
-    hasChanges: React.PropTypes.bool,
+export const modelShape = PropTypes.shape({
+  data: PropTypes.object.isRequired,
+  dataErrors: PropTypes.object.isRequired,
+  saveNotification: PropTypes.shape({ active: PropTypes.bool.isRequired }),
+  startEditing: PropTypes.func,
+  stopEditing: PropTypes.func,
+  getSavedData: PropTypes.func,
+  status: PropTypes.shape({
+    errors: PropTypes.array,
+    isReady: PropTypes.bool,
+    isReadOnly: PropTypes.bool,
+    isInProgress: PropTypes.bool,
+    canSave: PropTypes.bool,
+    hasChanges: PropTypes.bool,
   }),
-  fields: React.PropTypes.object, /* exists only while a SchemaForm is rendered */
-  validators: React.PropTypes.objectOf(React.PropTypes.func), /* may not exist until a SchemaForm is rendered */
+  fields: PropTypes.object, /* exists only while a SchemaForm is rendered */
+  validators: PropTypes.objectOf(PropTypes.func), /* may not exist until a SchemaForm is rendered */
 }).isRequired;
 
-export const mapperShape = React.PropTypes.objectOf(
-  React.PropTypes.oneOfType([
-    React.PropTypes.element,
-    React.PropTypes.func,
+export const mapperShape = PropTypes.objectOf(
+  PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.func,
   ]),
 );
 

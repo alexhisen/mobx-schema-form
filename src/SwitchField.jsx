@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Switch from 'react-toolbox/lib/switch';
 import asSchemaField from './asSchemaField';
@@ -29,8 +30,8 @@ const SwitchField = (props) => {
 
 SwitchField.propTypes = {
   formField: formShape,
-  value: React.PropTypes.bool,
-  error: React.PropTypes.string,
+  value: PropTypes.bool,
+  error: PropTypes.string,
 };
 
 export default asSchemaField(SwitchField);

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Dropdown from 'react-toolbox/lib/dropdown';
 import asSchemaField from './asSchemaField';
@@ -23,10 +24,10 @@ const DropdownField = (props) => {
 
 DropdownField.propTypes = {
   formField: formShape,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
-    React.PropTypes.bool,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool,
   ]),
 };
 

@@ -1,9 +1,10 @@
 /*
- * Syntax-compatible wrapper to react-schema-form SchemaForm (except onModelChange is not required)
+ * Syntax-compatible equivalent to react-schema-form SchemaForm (except onModelChange is not required)
  * that uses a Mobx FormStore model and React-Toolbox form widgets
  */
+import PropTypes from 'prop-types';
 import React from 'react';
-import { SchemaForm } from 'react-schema-form';
+import utils from 'react-schema-form/lib/utils';
 import { observer } from 'mobx-react';
 
 import { getFieldKey } from './validate';
@@ -44,6 +45,18 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
     }
   };
 
+  builder(form, model, index, onChange, mapper) {
+    const Field = mapper[form.type];
+    if (!Field) {
+      console.log('Invalid field: \"' + form.key[0] + '\"!'); // eslint-disable-line
+      return null;
+    }
+    if (form.condition && eval(form.condition) === false) {
+      return null;
+    }
+    return (<Field model={model} form={form} key={index} onChange={onChange} mapper={mapper} builder={this.builder} />);
+  }
+
   render() {
     let mapper;
     if (this.props.mergeMapper === false) {
@@ -81,44 +94,41 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
       };
     }
 
-    return (
-      <SchemaForm
-        mapper={mapper}
-        schema={this.props.schema}
-        form={this.props.form}
-        model={this.props.model}
-        onModelChange={this.onModelChange}
-        option={this.props.options || this.props.option}
-      />
-    );
+    const merged = utils.merge(this.props.schema, this.props.form, this.props.ignore, this.props.options || this.props.option);
+    // console.log('SchemaForm merged = ', JSON.stringify(merged, undefined, 2));
+
+    const forms = merged.map((form, index) => this.builder(form, this.props.model, index, this.onModelChange, mapper));
+
+    return (<div style={{width: '100%'}} className='SchemaForm'>{forms}</div>);
   }
 }
 
 MobxSchemaForm.propTypes = {
   mapper: mapperShape,
   model: modelShape,
-  schema: React.PropTypes.shape({
-    type: React.PropTypes.string,
-    title: React.PropTypes.string,
-    properties: React.PropTypes.object.isRequired, /* each key has the schema portion of formShape */
-    required: React.PropTypes.array,
+  schema: PropTypes.shape({
+    type: PropTypes.string,
+    title: PropTypes.string,
+    properties: PropTypes.object.isRequired, /* each key has the schema portion of formShape */
+    required: PropTypes.array,
   }),
   /* actually a subset of formShape, no schema and some properties in formShape are copied from schema */
-  form: React.PropTypes.arrayOf(React.PropTypes.oneOfType([React.PropTypes.string, formShape])),
-  options: React.PropTypes.shape({
-    suppressPropertyTitles: React.PropTypes.bool,
+  form: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, formShape])),
+  options: PropTypes.shape({
+    suppressPropertyTitles: PropTypes.bool,
     /* actually a subset of formShape, no schema and some properties in formShape are copied from schema */
     formDefaults: formShape,
-    validators: React.PropTypes.objectOf(React.PropTypes.func),
+    validators: PropTypes.objectOf(PropTypes.func),
   }),
   /* @deprecated For compatibility with react-schema-form */
-  option: React.PropTypes.shape({
-    suppressPropertyTitles: React.PropTypes.bool,
+  option: PropTypes.shape({
+    suppressPropertyTitles: PropTypes.bool,
     formDefaults: formShape,
-    validators: React.PropTypes.objectOf(React.PropTypes.func),
+    validators: PropTypes.objectOf(PropTypes.func),
   }),
-  onModelChange: React.PropTypes.func,
-  mergeMapper: React.PropTypes.bool,
+  ignore: PropTypes.objectOf(PropTypes.bool), // list of paths in schema to ignore (sans root level name)
+  onModelChange: PropTypes.func,
+  mergeMapper: PropTypes.bool,
 };
 
 export default MobxSchemaForm;

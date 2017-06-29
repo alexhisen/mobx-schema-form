@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { formShape } from './schemaFormPropTypes';
 
@@ -14,10 +15,10 @@ const FieldWrapper = (props) => {
 };
 
 FieldWrapper.propTypes = {
-  children: React.PropTypes.element,
-  fieldType: React.PropTypes.string,
-  hasError: React.PropTypes.bool,
-  className: React.PropTypes.string,
+  children: PropTypes.element,
+  fieldType: PropTypes.string,
+  hasError: PropTypes.bool,
+  className: PropTypes.string,
   formField: formShape,
 };
 

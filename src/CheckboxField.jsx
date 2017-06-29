@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Checkbox from 'react-toolbox/lib/checkbox';
 import asSchemaField from './asSchemaField';
@@ -17,8 +18,8 @@ const CheckboxField = (props) => {
 
 CheckboxField.propTypes = {
   formField: formShape,
-  value: React.PropTypes.bool,
-  error: React.PropTypes.string,
+  value: PropTypes.bool,
+  error: PropTypes.string,
 };
 
 export default asSchemaField(CheckboxField);

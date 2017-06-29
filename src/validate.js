@@ -1,4 +1,4 @@
-import { utils } from 'react-schema-form';
+import utils from 'react-schema-form/lib/utils';
 import { action } from 'mobx';
 import template from 'lodash.template';
 import ObjectPath from 'objectpath';

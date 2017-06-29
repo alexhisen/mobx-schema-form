@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Button } from 'react-toolbox/lib/button';
@@ -46,16 +47,16 @@ import { modelShape } from './schemaFormPropTypes';
 
 SaveButton.propTypes = {
   model: modelShape,
-  options: React.PropTypes.shape({
-    allowCreate: React.PropTypes.bool,
-    saveAll: React.PropTypes.bool,
-    skipPropertyBeingEdited: React.PropTypes.bool,
-    keepServerError: React.PropTypes.bool,
+  options: PropTypes.shape({
+    allowCreate: PropTypes.bool,
+    saveAll: PropTypes.bool,
+    skipPropertyBeingEdited: PropTypes.bool,
+    keepServerError: PropTypes.bool,
   }),
-  onClick: React.PropTypes.func,
-  onSave: React.PropTypes.func,
-  onInvalid: React.PropTypes.func,
-  disabled: React.PropTypes.bool,
+  onClick: PropTypes.func,
+  onSave: PropTypes.func,
+  onInvalid: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 export default SaveButton;

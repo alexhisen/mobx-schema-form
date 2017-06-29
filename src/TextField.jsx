@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Input from 'react-toolbox/lib/input';
 import asSchemaField from './asSchemaField';
@@ -21,9 +22,9 @@ const TextField = (props) => {
 
 TextField.propTypes = {
   formField: formShape,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
   ]),
 };
 
