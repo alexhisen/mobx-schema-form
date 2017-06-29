@@ -100,6 +100,18 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
       value = val.target.checked;
     }
 
+    if (this.props.form.schema && this.props.form.schema.type === 'boolean' && value !== null && typeof value !== 'boolean') {
+      value = value && value.toLowerCase && value.toLowerCase();
+      if (value === 0 || value === -0 || value === '0' || value === 'f' || value === 'false' || value === 'off' || value === 'no' || value === 'n') {
+        value = false;
+                              // value !== value is a NaN check that doesn't give true for a string
+      } else if (value === null || value !== value || value === '' || value === undefined) {
+        value = null;
+      } else {
+        value = true;
+      }
+    }
+
     if (value === undefined) value = null;
 
     const hasError = !!this.getError();
