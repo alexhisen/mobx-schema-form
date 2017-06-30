@@ -48,7 +48,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
   builder(form, model, index, onChange, mapper) {
     const Field = mapper[form.type];
     if (!Field) {
-      console.log('Invalid field: \"' + form.key[0] + '\"!'); // eslint-disable-line
+      console.warn(`Skipping field - unmapped type: '${form.type}' in ${getFieldKey(form) || `field ${index}`}`); // eslint-disable-line no-console
       return null;
     }
     if (form.condition && eval(form.condition) === false) {
@@ -72,6 +72,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
       const DropdownField = require('./DropdownField');
       const BoolLink = require('./BoolLink');
       const SliderField = require('./SliderField');
+      const Help = require('./Help');
       /* eslint-enable */
 
       // mapper is used to map types in form object, not schema object
@@ -90,6 +91,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
         select: DropdownField,
         link: BoolLink,
         range: SliderField,
+        help: Help,
         ...this.props.mapper,
       };
     }
