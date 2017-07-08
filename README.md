@@ -33,6 +33,8 @@ mobx-schema-form requires React, [MobX](https://mobx.js.org/) 2.2+ or 3.x, mobx-
 npm install --save mobx-schema-form
 ```
 
+Note that npm will issue a warning about an unmet peer dependency of material-ui for react-schema-form. You can safely ignore it. The portion of react-schema-form we use does not require material-ui.
+
 ## Minimal Usage Example
 
 ```js
@@ -94,4 +96,18 @@ const schemaJson = {
 
 > Note that MobxSchemaForm uses the same props as react-schema-form's SchemaForm, except what react-schema-form calls model is actually model.data in mobx-schema-form. It also supports 'option' for compatibility with SchemaForm, though the correct form in MobxSchemaForm is 'options' plural.
 
+## React Hot Loader 3 compatibility
 
+If you use react-hot-loader, you may find that Radio widgets are non-functional. In the current beta of React-Toolbox 2.x, you can work-around this issue by placing this code somewhere in your app \(like an index.js\):
+
+```js
+import { overrideComponentTypeChecker } from 'react-toolbox/lib/utils/is-component-of-type';
+
+// Work-around for react-hot-loader issue in React-Toolbox - see https://github.com/react-toolbox/react-toolbox/pull/1164
+overrideComponentTypeChecker((classType, reactElement) => {
+  return reactElement && (
+    reactElement.type === classType ||
+    reactElement.type.name === classType.displayName
+  );
+});
+```
