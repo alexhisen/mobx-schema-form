@@ -106,7 +106,7 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
       if (value === 0 || value === -0 || value === '0' || value === 'f' || value === 'false' || value === 'off' || value === 'no' || value === 'n') {
         value = false;
                               // value !== value is a NaN check that doesn't give true for a string
-      } else if (value === null || value !== value || value === '' || value === undefined) {
+      } else if (value === null || value !== value || value === '' || value === undefined) { // eslint-disable-line no-self-compare
         value = null;
       } else {
         value = true;

@@ -51,9 +51,11 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
       console.warn(`Skipping field - unmapped type: '${form.type}' in ${getFieldKey(form) || `field ${index}`}`); // eslint-disable-line no-console
       return null;
     }
+    /* eslint-disable no-eval */
     if (form.condition && eval(form.condition) === false) {
       return null;
     }
+    /* eslint-enable */
     return (<Field model={model} form={form} key={index} onChange={onChange} mapper={mapper} builder={this.builder} />);
   }
 
@@ -101,7 +103,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
 
     const forms = merged.map((form, index) => this.builder(form, this.props.model, index, this.onModelChange, mapper));
 
-    return (<div style={{width: '100%'}} className='SchemaForm'>{forms}</div>);
+    return (<div style={{ width: '100%' }} className="SchemaForm">{forms}</div>);
   }
 }
 
