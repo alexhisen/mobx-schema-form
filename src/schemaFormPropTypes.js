@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 
 // Unfortunately eslint-plugin-react doesn't support validating against imported shapes:
 // https://github.com/yannickcr/eslint-plugin-react/issues/817
