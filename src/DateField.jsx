@@ -79,6 +79,9 @@ class DateField extends React.Component {
 
   onActiveChange = (active) => {
     if (active) {
+      // work-around for iOS Safari bug where cursor would blink over the datepicker:
+      document.activeElement && document.activeElement.blur();
+
       this.enableSwipe();
       this.props.onFocus();
     } else {
