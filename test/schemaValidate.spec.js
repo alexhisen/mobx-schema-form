@@ -3,7 +3,8 @@ import { mount } from 'enzyme';
 
 import React from 'react';
 import FormStore from 'mobx-form-store';
-import { MobxSchemaForm, validateField, asSchemaField } from '../lib';
+import { validateField, asSchemaField } from '../lib';
+import SchemaForm from '../lib/SchemaForm';
 
 chai.expect();
 
@@ -40,7 +41,7 @@ const schemaJson = {
 
 const mapper = { email: asSchemaField(function(){ return (<span />); }) };
 
-mount(<MobxSchemaForm schema={schemaJson.schema} form={schemaJson.form} model={store} mapper={mapper} mergeMapper={false} />);
+mount(<SchemaForm schema={schemaJson.schema} form={schemaJson.form} model={store} mapper={mapper} />);
 
 describe('ValidateForm', function () {
   describe('when email is null', function () {
