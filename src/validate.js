@@ -184,7 +184,7 @@ function validateField(formField, model, value) {
       errorMessage,
     );
   })();
-  
+
   return errorMessage;
 }
 /**
@@ -218,7 +218,7 @@ function validateForm(fields, model, onlyWithValues = false) {
  * @param {Object} model - modelShape object with save() method
  * @param {Object} [options] - passed to model.save() method
  * @param {Event} [e] - event object (i.e. from click or submit event)
- * @returns {Promise.<boolean>} true if form is valid and save() was called, false otherwise
+ * @returns {Promise.<boolean>} false if form is invalid, model.save() result otherwise
  */
 async function validateAndSave(model, options, e) {
   const isValid = validateForm(model.fields, model);
@@ -227,9 +227,11 @@ async function validateAndSave(model, options, e) {
     const button = e && e.target;
     if (button) button.disabled = true;
 
-    await model.save(options);
+    const rawResponse = await model.save(options);
 
     if (button) button.disabled = false;
+
+    return rawResponse || isValid;
   }
 
   return isValid;

@@ -17,17 +17,18 @@ import { modelShape } from './schemaFormPropTypes';
       if (e.isDefaultPrevented()) return;
     }
 
-    const isValid = await validateAndSave(this.props.model, this.props.options, e);
+    const responseAfterValidation = await validateAndSave(this.props.model, this.props.options, e);
 
-    if (isValid) {
-      if (typeof this.props.onSave === 'function') {
-        this.props.onSave(e);
+    if (!responseAfterValidation) {
+      if (typeof this.props.onInvalid === 'function') {
+        this.props.onInvalid(e);
       }
+
       return;
     }
 
-    if (typeof this.props.onInvalid === 'function') {
-      this.props.onInvalid(e);
+    if (typeof this.props.onSave === 'function') {
+      this.props.onSave(e, responseAfterValidation);
     }
   };
 
