@@ -120,9 +120,9 @@ class DateField extends React.Component {
 DateField.propTypes = {
   formField: formShape,
   readOnly: PropTypes.bool,
-  onChange: React.PropTypes.func,
-  onFocus: React.PropTypes.func,
-  onBlur: React.PropTypes.func,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 export default asSchemaField(DateField, 'datepicker');
