@@ -7,6 +7,17 @@ import { getFieldKey, getFieldValue, validateField, getValidationMessage } from 
 import { modelShape, formShape, mapperShape } from './schemaFormPropTypes';
 
 const asSchemaField = (ComposedComponent, fieldType) => observer(class extends React.Component {
+  static propTypes = {
+    form: formShape,
+    model: modelShape,
+    onChange: PropTypes.func,
+    mapper: mapperShape,
+    /* Not used:
+    builder: PropTypes.func,
+    */
+  };
+
+  static displayName = 'SchemaField';
 
   constructor(props) {
     super(props);
@@ -220,18 +231,6 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
 
     return composedComponent;
   }
-
-  static propTypes = {
-    form: formShape,
-    model: modelShape,
-    onChange: PropTypes.func,
-    mapper: mapperShape,
-    /* Not used:
-    builder: PropTypes.func,
-    */
-  };
-
-  static displayName = 'SchemaField';
 });
 
 export default asSchemaField;
