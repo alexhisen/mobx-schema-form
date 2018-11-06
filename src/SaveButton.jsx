@@ -32,7 +32,7 @@ import { modelShape } from './schemaFormPropTypes';
   };
 
   render() {
-    const { model, options, disabled, onClick, onSave, onInvalid, ...others } = this.props; // eslint-disable-line no-unused-vars
+    const { model, options, onClick, onSave, onInvalid, ...others } = this.props; // eslint-disable-line no-unused-vars
     return (
       <Button
         raised
