@@ -8,7 +8,7 @@ https://alexhisen.gitbooks.io/mobx-forms/
 
 mobx-schema-form renders form widgets \(by default Material Design\) based on schema and form definition in [json-schema-form](https://github.com/json-schema-form/json-schema-form/wiki/Documentation) format. Includes intelligent real-time validation and display of validation error message in each widget.
 
-mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [react-schema-form](https://github.com/networknt/react-schema-form). By default, mobx-schema-form uses [React-Toolbox](http://react-toolbox.com/) widgets instead of material-ui and wires up the widgets to work with [MobX FormStore](https://alexhisen.gitbooks.io/mobx-forms/formstore-overview.html). It also adds some improvements primarily in the area of validation.
+mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [react-schema-form](https://github.com/networknt/react-schema-form). By default, mobx-schema-form uses [React-Toolbox](http://react-toolbox.io/) widgets instead of material-ui and wires up the widgets to work with [MobX FormStore](https://alexhisen.gitbooks.io/mobx-forms/formstore-overview.html). It also adds some improvements primarily in the area of validation.
 
 ## Features
 
