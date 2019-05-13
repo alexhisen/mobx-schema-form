@@ -19,6 +19,7 @@ mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [r
 * Easy styling/customization of each widget on a per-field basis
 * Provides facilities for form-wide validation \(i.e. of required fields when you hit the Save button\) in addition to intelligent real-time field-level validation.
 * Fields that are currently not rendered \(based on their conditions\) are omitted from form-wide validation.
+* \(NEW in v1.5\) When fields stop being rendered based on their conditions they can optionally be set to null or other value.
 * In addition to the built-in schema/[tv4](https://github.com/geraintluff/tv4)-based validation, supports custom validations and server-returned validation errors.
 * Values from text, etc input fields have their white space trimmed on blur and non-numeric characters cannot be entered into form fields with schema type of numeric/integer \(but negative integers and decimals such as 1.01 can still be keyed-in correctly\).
 * Radios or Dropdowns can be used for nullable Boolean values with automatic datatype conversion from strings such as 'off, no, false' to false and empty strings to null.
