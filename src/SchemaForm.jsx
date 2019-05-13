@@ -8,6 +8,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import utils from 'react-schema-form/lib/utils';
+import { action } from 'mobx';
 import { observer } from 'mobx-react';
 
 import { getFieldKey } from './validate';
@@ -40,8 +41,18 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
 
     // since we unmount first before children unmount, must check if fields still exists
     if (!this.props.model.fields) return;
+
     if (value === undefined) {
       // field has been removed from form
+      /* eslint-disable no-eval */
+      if (formField.falseConditionValue !== undefined && formField.condition && eval(formField.condition) === false) {
+        action(() => {
+          const fieldKey = getFieldKey(formField);
+          utils.selectOrSet(fieldKey, this.props.model.data, formField.falseConditionValue);
+          utils.selectOrSet(fieldKey, this.props.model.dataErrors, null);
+        })();
+      }
+      /* eslint-enable */
       delete this.props.model.fields[key];
     } else {
       this.props.model.fields[key] = formField;

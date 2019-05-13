@@ -37,6 +37,7 @@ export const formShape = PropTypes.shape({
     modelKey: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   }),
   /* The rest are non-SchemaForm-standard props */
+  falseConditionValue: PropTypes.any,
   mobxCondition: PropTypes.string, /* only used in FieldSet right now for a mobx-reactive condition */
   className: PropTypes.string,
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

@@ -54,7 +54,10 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
         utils.selectOrSet(key, this.props.model.dataErrors, null);
         this.props.onChange(this.props.form);
       })();
+      return;
     }
+
+    this.props.onChange(this.props.form);
   }
 
   /**
