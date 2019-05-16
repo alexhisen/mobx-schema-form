@@ -78,7 +78,14 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
 
   render() {
     const mapper = this.props.mapper;
-    const merged = utils.merge(this.props.schema, this.props.form, this.props.ignore, this.props.options || this.props.option);
+    const options = this.props.options || this.props.option;
+    if (options) {
+      // change from correct spelling to theirs
+      if (options.supressPropertyTitles === undefined) {
+        options.supressPropertyTitles = options.suppressPropertyTitles;
+      }
+    }
+    const merged = utils.merge(this.props.schema, this.props.form, this.props.ignore, options);
     // console.log('SchemaForm merged = ', JSON.stringify(merged, undefined, 2));
 
     const forms = merged.map((form, index) => this.builder(form, this.props.model, index, this.onModelChange, mapper));
@@ -106,7 +113,7 @@ SchemaForm.propTypes = {
   }),
   /* @deprecated For compatibility with react-schema-form */
   option: PropTypes.shape({
-    suppressPropertyTitles: PropTypes.bool,
+    supressPropertyTitles: PropTypes.bool, /* yes, they have it misspelled like that - we convert to their spelling */
     formDefaults: formShape,
     validators: PropTypes.objectOf(PropTypes.func),
   }),

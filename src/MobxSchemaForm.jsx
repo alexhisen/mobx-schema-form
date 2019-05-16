@@ -70,7 +70,7 @@ MobxSchemaForm.propTypes = {
   }),
   /* @deprecated For compatibility with react-schema-form */
   option: PropTypes.shape({
-    suppressPropertyTitles: PropTypes.bool,
+    supressPropertyTitles: PropTypes.bool,  /* yes, they have it misspelled like that - we convert to their spelling */
     formDefaults: formShape,
     validators: PropTypes.objectOf(PropTypes.func),
   }),
