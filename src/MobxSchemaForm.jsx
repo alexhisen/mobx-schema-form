@@ -77,6 +77,7 @@ MobxSchemaForm.propTypes = {
   ignore: PropTypes.objectOf(PropTypes.bool), // list of paths in schema to ignore (sans root level name)
   onModelChange: PropTypes.func,
   mergeMapper: PropTypes.bool,
+  asArray: PropTypes.bool,
 };
 
 export default MobxSchemaForm;

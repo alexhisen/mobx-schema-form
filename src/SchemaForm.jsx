@@ -16,7 +16,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
 
 @observer class SchemaForm extends React.Component {
   componentWillMount() {
-    this.props.model.fields = {};
+    this.props.model.fields = this.props.model.fields || {};
 
     const options = this.props.options || this.props.option;
     if (options && options.validators) {
@@ -26,7 +26,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
   }
 
   componentWillUnmount() {
-    delete this.props.model.fields;
+    this.unmounting = true;
   }
 
   onModelChange = (formField, value) => {
@@ -41,7 +41,10 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
     this.props.onModelChange && this.props.onModelChange(key, value);
 
     // since we unmount first before children unmount, must check if fields still exists
-    if (!model.fields) return;
+    if (this.unmounting) {
+      delete model.fields[key];
+      return;
+    }
 
     if (value === undefined) {
       // field has been removed from form
@@ -63,9 +66,11 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
 
   // IMPORTANT: form and model variable names must not be changed to not break form.condition evals
   builder(form, model, index, onChange, mapper) {
+    const asString = true;
+    const key = getFieldKey(form, asString);
     const Field = mapper[form.type];
     if (!Field) {
-      console.warn(`Skipping field - unmapped type: '${form.type}' in ${getFieldKey(form) || `field ${index}`}`); // eslint-disable-line no-console
+      console.warn(`Skipping field - unmapped type: '${form.type}' in ${key || `field ${index}`}`); // eslint-disable-line no-console
       return null;
     }
     /* eslint-disable no-eval */
@@ -73,7 +78,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
       return null;
     }
     /* eslint-enable */
-    return (<Field model={model} form={form} key={index} onChange={onChange} mapper={mapper} builder={this.builder} />);
+    return (<Field model={model} form={form} key={key || index} onChange={onChange} mapper={mapper} builder={this.builder} />);
   }
 
   render() {
@@ -88,9 +93,9 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
     const merged = utils.merge(this.props.schema, this.props.form, this.props.ignore, options);
     // console.log('SchemaForm merged = ', JSON.stringify(merged, undefined, 2));
 
-    const forms = merged.map((form, index) => this.builder(form, this.props.model, index, this.onModelChange, mapper));
+    const fields = merged.map((form, index) => this.builder(form, this.props.model, index, this.onModelChange, mapper));
 
-    return (<div style={{ width: '100%' }} className="SchemaForm">{forms}</div>);
+    return this.props.asArray ? fields : (<div style={{ width: '100%' }} className="SchemaForm">{fields}</div>);
   }
 }
 
@@ -119,6 +124,7 @@ SchemaForm.propTypes = {
   }),
   ignore: PropTypes.objectOf(PropTypes.bool), // list of paths in schema to ignore (sans root level name)
   onModelChange: PropTypes.func,
+  asArray: PropTypes.bool,
 };
 
 export default SchemaForm;
