@@ -52,6 +52,7 @@ class MobxSchemaForm extends React.Component {
 }
 
 MobxSchemaForm.propTypes = {
+  className: PropTypes.string,
   mapper: mapperShape,
   model: modelShape,
   schema: PropTypes.shape({

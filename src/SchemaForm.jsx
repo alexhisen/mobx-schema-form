@@ -95,11 +95,16 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
 
     const fields = merged.map((form, index) => this.builder(form, this.props.model, index, this.onModelChange, mapper));
 
-    return this.props.asArray ? fields : (<div style={{ width: '100%' }} className="SchemaForm">{fields}</div>);
+    return this.props.asArray ? fields : (<div style={{ width: '100%' }} className={this.props.className}>{fields}</div>);
   }
 }
 
+SchemaForm.defaultProps = {
+  className: 'SchemaForm',
+};
+
 SchemaForm.propTypes = {
+  className: PropTypes.string,
   mapper: mapperShape.isRequired,
   model: modelShape,
   schema: PropTypes.shape({
