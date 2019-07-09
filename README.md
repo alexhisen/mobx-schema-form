@@ -37,6 +37,8 @@ npm install --save mobx-schema-form
 
 Note that npm will issue a warning about an unmet peer dependency of material-ui for react-schema-form. You can safely ignore it. The portion of react-schema-form we use does not require material-ui.
 
+> As of v1.7, react-toolbox is now a peer dependency, so you must install it yourself with npm install react-toolbox.
+
 ## Minimal Usage Example
 
 ```js

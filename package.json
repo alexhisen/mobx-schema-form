@@ -10,18 +10,12 @@
     "prepublish": "npm build && npm test"
   },
   "dependencies": {
-    "babel-polyfill": "^6.9.1",
     "classnames": "^2.2.5",
     "hammerjs": "^2.0.8",
     "lodash.template": "^4.0.0",
-    "mobx": "^2.2.0 || ^3.0.0 || ^4.0.0 || ^5.0.0",
-    "mobx-form-store": "^1.0.5",
-    "mobx-react": "^3.5.0 || ^4.0.0 || ^5.2.5",
     "objectpath": "^1.2.1",
     "prop-types": "^15.5.10",
-    "react": "^15.3.2 || ^16.0.0",
     "react-schema-form": "^0.3.2",
-    "react-toolbox": "^1.3.0 || ^2.0.0 || ^2.0.0-beta.10",
     "sugar": "^2.0.1"
   },
   "devDependencies": {
@@ -45,9 +39,14 @@
     "fast-async": "6.0.34",
     "jsdom": "^9.9.1",
     "mocha": "^2.3.4",
+    "mobx": "^2.2.0 || ^3.0.0 || ^4.0.0 || ^5.0.0",
+    "mobx-form-store": "^1.0.5",
+    "mobx-react": "^3.5.0 || ^4.0.0 || ^5.2.5",
+    "react": "^15.3.2 || ^16.0.0",
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.3.2",
-    "react-test-renderer": "^15.6.2"
+    "react-test-renderer": "^15.6.2",
+    "react-toolbox": "^1.3.0 || ^2.0.0 || ^3.0.0 || ^2.0.0-beta.10"
   },
   "peerDependencies": {
     "babel-polyfill": "^6.9.1",
@@ -56,7 +55,7 @@
     "mobx-form-store": "^1.0.5",
     "mobx-react": "^3.5.0 || ^4.0.0 || ^5.2.5",
     "react": "^15.3.2 || ^16.0.0",
-    "react-toolbox": "^1.3.0 || ^2.0.0 || ^2.0.0-beta.10"
+    "react-toolbox": "^1.3.0 || ^2.0.0 || ^3.0.0 || ^2.0.0-beta.10"
   },
   "files": [
     "lib",
