@@ -79,6 +79,7 @@ MobxSchemaForm.propTypes = {
   onModelChange: PropTypes.func,
   mergeMapper: PropTypes.bool,
   asArray: PropTypes.bool,
+  children: PropTypes.element,
 };
 
 export default MobxSchemaForm;

@@ -95,7 +95,17 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
 
     const fields = merged.map((form, index) => this.builder(form, this.props.model, index, this.onModelChange, mapper));
 
-    return this.props.asArray ? fields : (<div style={{ width: '100%' }} className={this.props.className}>{fields}</div>);
+    const child = this.props.children && React.cloneElement(React.Children.only(this.props.children), { children: fields });
+
+    if (this.props.asArray) {
+      return child || fields;
+    }
+
+    return (
+      <div style={{ width: '100%' }} className={this.props.className}>
+        {child || fields}
+      </div>
+    );
   }
 }
 
@@ -130,6 +140,7 @@ SchemaForm.propTypes = {
   ignore: PropTypes.objectOf(PropTypes.bool), // list of paths in schema to ignore (sans root level name)
   onModelChange: PropTypes.func,
   asArray: PropTypes.bool,
+  children: PropTypes.element,
 };
 
 export default SchemaForm;

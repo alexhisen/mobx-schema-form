@@ -64,9 +64,22 @@ const mapper = {
   date: asSchemaField(function(){ return (<span />); }),
 };
 
+let fieldCount = 0;
+
+const Form = ({ name, children }) => {
+  fieldCount = React.Children.count(children);
+  return (<form name={name}>{children}</form>);
+};
+
 describe('Mounted Form', function () {
   const store = new FormStore({ server: { get: function(){}, set: function(){} } }, { email: null, required_date: null, optional_date: null });
-  mount(<SchemaForm schema={schemaJson.schema} form={schemaJson.form} model={store} mapper={mapper}/>);
+  mount(<SchemaForm schema={schemaJson.schema} form={schemaJson.form} model={store} mapper={mapper}><Form name="test" /></SchemaForm>);
+
+  describe('Mounted Child component', function () {
+    it('should receive 3 fields as children', () => {
+      expect(fieldCount).to.be.equal(3);
+    });
+  });
 
   describe('Model Fields when mounted', function () {
     it('should have 3 keys', () => {
