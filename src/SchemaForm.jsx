@@ -93,7 +93,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
     const merged = utils.merge(this.props.schema, this.props.form, this.props.ignore, options);
     // console.log('SchemaForm merged = ', JSON.stringify(merged, undefined, 2));
 
-    const fields = merged.map((form, index) => this.builder(form, this.props.model, index, this.onModelChange, mapper));
+    const fields = merged.map((form, index) => this.builder(form, this.props.model, index, this.onModelChange, mapper)).filter((f) => f);
 
     const child = this.props.children && React.cloneElement(React.Children.only(this.props.children), { children: fields });
 

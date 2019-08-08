@@ -28,6 +28,9 @@ const schemaJson = {
           "302": "Email is required"
         }
       },
+      "password": {
+        "title": "Password",
+      },
       "required_date": {
         "title": "Required Date",
         "type": "object",
@@ -48,6 +51,11 @@ const schemaJson = {
       "type": "email"
     },
     {
+      "key": "password",
+      "type": "password",
+      "condition": "model.data.email !== null",
+    },
+    {
       "key": "required_date",
       "type": "date"
     },
@@ -62,6 +70,7 @@ const schemaJson = {
 const mapper = {
   email: asSchemaField(function(){ return (<span />); }),
   date: asSchemaField(function(){ return (<span />); }),
+  password: asSchemaField(function(){ return (<span />); }),
 };
 
 let fieldCount = 0;
@@ -75,6 +84,7 @@ describe('Mounted Form', function () {
   const store = new FormStore({ server: { get: function(){}, set: function(){} } }, { email: null, required_date: null, optional_date: null });
   mount(<SchemaForm schema={schemaJson.schema} form={schemaJson.form} model={store} mapper={mapper}><Form name="test" /></SchemaForm>);
 
+  // the password field is not rendered due to its condition depending on non-null email, hence 3 fields, not 4.
   describe('Mounted Child component', function () {
     it('should receive 3 fields as children', () => {
       expect(fieldCount).to.be.equal(3);
