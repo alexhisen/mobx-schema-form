@@ -215,6 +215,7 @@ function validateForm(fields, model, onlyWithValues = false) {
 
 /**
  * Validates all the fields in props.model.fields and if no validation errors, calls model.save()
+ * Will set disabled DOM attribute on the event.target while saving, then clear it if event object is passed.
  * @param {Object} model - modelShape object with save() method
  * @param {Object} [options] - passed to model.save() method
  * @param {Event} [e] - event object (i.e. from click or submit event)

@@ -17,7 +17,9 @@ import { modelShape } from './schemaFormPropTypes';
       if (e.isDefaultPrevented()) return;
     }
 
-    const isValid = await validateAndSave(this.props.model, this.props.options, e);
+    e.persist(); // so that it can be used by onSave / onInvalid callbacks after the async save
+
+    const isValid = await validateAndSave(this.props.model, this.props.options, this.props.disableWhileSaving && e);
 
     if (isValid) {
       if (typeof this.props.onSave === 'function') {
@@ -45,6 +47,10 @@ import { modelShape } from './schemaFormPropTypes';
   }
 }
 
+SaveButton.defaultProps = {
+  disableWhileSaving: true,
+};
+
 SaveButton.propTypes = {
   model: modelShape,
   options: PropTypes.shape({
@@ -57,6 +63,7 @@ SaveButton.propTypes = {
   onSave: PropTypes.func,
   onInvalid: PropTypes.func,
   disabled: PropTypes.bool,
+  disableWhileSaving: PropTypes.bool,
 };
 
 export default SaveButton;
