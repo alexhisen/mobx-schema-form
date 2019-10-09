@@ -15,6 +15,7 @@
     "lodash.template": "^4.0.0",
     "objectpath": "^1.2.1",
     "prop-types": "^15.5.10",
+    "react-input-mask": "^2.0.4",
     "react-schema-form": "^0.3.2",
     "sugar": "^2.0.1"
   },

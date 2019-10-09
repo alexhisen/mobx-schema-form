@@ -25,6 +25,7 @@ mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [r
 * Radios or Dropdowns can be used for nullable Boolean values with automatic datatype conversion from strings such as 'off, no, false' to false and empty strings to null.
 * \(NEW in v1.6\) When using React 16, you can have mobx-schema-form just return the array of rendered fields without a wrapper.
 * \(NEW in v1.8\) MobxSchemaForm accepts optional child component to which fields are passed as children, so it can further wrap each field if necessary
+* \(NEW in v1.9\) Text/Number inputs can be formatted (as-you-type) with a mask supported by [react-input-mask](https://github.com/sanniassin/react-input-mask)
 
 ## Requirements
 

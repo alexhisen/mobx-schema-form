@@ -47,6 +47,8 @@ export const formShape = PropTypes.shape({
   tickLabelsFormat: PropTypes.func,
   props: PropTypes.object, /* props passed as-is to the React-Toolbox component */
   validations: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.string])),
+  mask: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.any)]), // array is for future versions of React-Input-Mask
+  maskProps: PropTypes.object, /* props passed as-is to the React-Input-Mask component */
 }).isRequired;
 
 export const modelShape = PropTypes.shape({
