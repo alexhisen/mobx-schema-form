@@ -180,7 +180,7 @@ function validateField(formField, model, value) {
 
     // update error
     utils.selectOrSet(
-      getFieldKey(formField)[0], // for nested props. e.g. if type is array of autocmpletes
+      getFieldKey(formField),
       model.dataErrors,
       errorMessage,
     );
