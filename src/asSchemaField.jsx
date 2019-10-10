@@ -67,11 +67,17 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
    * @param {Event} [e] - Event object for React-Toolbox widgets and from onBlur event
    */
   onChangeValidate = (val, e) => {
+    const event = e || val;
     let value = (val && val.target) ? val.target.value : val;
 
-    const strict = (e && e.type === 'blur');
+    if (event && event.type === 'focus') {
+      // react-input-mask calls onChange before the focus event completes.
+      // this will set beingEdited to true and avoid premature validation:
+      this.onFocus();
+    }
 
     if (this.props.form.schema && this.props.form.schema.type.match(/integer|number/) && typeof value !== 'number') {
+      const strict = (event && event.type === 'blur');
       if (!value || strict) {
         if (this.state.valueAsString) {
           // clear any temporary string representation
@@ -111,8 +117,8 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
           this.setState({ valueAsString });
         }
       }
-    } else if (val && val.target && this.props.form.schema && this.props.form.schema.type === 'boolean') {
-      value = val.target.checked;
+    } else if (event && event.target && this.props.form.schema && this.props.form.schema.type === 'boolean') {
+      value = event.target.checked;
     }
 
     if (this.props.form.schema && this.props.form.schema.type === 'boolean' && value !== null && typeof value !== 'boolean') {
