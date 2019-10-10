@@ -47,6 +47,11 @@ const TextField = (props) => {
   );
 };
 
+// This prevents InputMask from erroring due to mismatch with this defaultProp on the React-Toolbox Input component.
+TextField.defaultProps = {
+  disabled: false,
+};
+
 TextField.propTypes = {
   formField: formShape,
   value: PropTypes.oneOfType([

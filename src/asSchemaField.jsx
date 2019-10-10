@@ -215,8 +215,8 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
         formField={form}
         value={value}
         error={error}
-        disabled={model.status && model.status.isReadOnly}
-        readOnly={model.status && model.status.isReadOnly}
+        disabled={!!(model.status && model.status.isReadOnly)}
+        readOnly={!!(model.status && model.status.isReadOnly)}
         onChange={this.onChangeValidate}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
