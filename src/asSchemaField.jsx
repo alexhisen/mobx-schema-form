@@ -178,8 +178,9 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
         const trimmed = value.trim();
 
         if (value !== trimmed || !this.valueEntered || this.initialValue || hasError || this.state.valueAsString) {
-          this.valueEntered = true;
+          this.valueEntered = true; // this must be true for validateField() to actually be called
           this.onChangeValidate(trimmed, e);
+          this.valueEntered = !!trimmed; // if value was cleared, resets behavior for next time
         }
       }
     }
