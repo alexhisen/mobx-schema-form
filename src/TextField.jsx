@@ -30,10 +30,11 @@ const TextField = (props) => {
       {...others}
     >
       {(inputProps) => {
-        const { mask, maskChar, formatChars, alwaysShowMask, inputRef, beforeMaskedValueChange, ...otherProps } = inputProps;
         return (
           <Input
-            {...otherProps}
+            {...inputProps}
+            disabled={props.disabled}
+            readOnly={props.readOnly}
             type={formField.type}
             multiline={formField.type === 'textarea'}
             label={formField.description || formField.title}
@@ -50,6 +51,7 @@ const TextField = (props) => {
 // This prevents InputMask from erroring due to mismatch with this defaultProp on the React-Toolbox Input component.
 TextField.defaultProps = {
   disabled: false,
+  readOnly: false,
 };
 
 TextField.propTypes = {
