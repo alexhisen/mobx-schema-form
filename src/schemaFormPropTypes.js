@@ -37,6 +37,7 @@ export const formShape = PropTypes.shape({
     modelKey: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
   }),
   /* The rest are non-SchemaForm-standard props */
+  falseConditionValue: PropTypes.any,
   mobxCondition: PropTypes.string, /* only used in FieldSet right now for a mobx-reactive condition */
   className: PropTypes.string,
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -46,6 +47,8 @@ export const formShape = PropTypes.shape({
   tickLabelsFormat: PropTypes.func,
   props: PropTypes.object, /* props passed as-is to the React-Toolbox component */
   validations: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.string])),
+  mask: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.any)]), // array is for future versions of React-Input-Mask
+  maskProps: PropTypes.object, /* props passed as-is to the React-Input-Mask component */
 }).isRequired;
 
 export const modelShape = PropTypes.shape({

@@ -8,7 +8,7 @@ https://alexhisen.gitbooks.io/mobx-forms/
 
 mobx-schema-form renders form widgets \(by default Material Design\) based on schema and form definition in [json-schema-form](https://github.com/json-schema-form/json-schema-form/wiki/Documentation) format. Includes intelligent real-time validation and display of validation error message in each widget.
 
-mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [react-schema-form](https://github.com/networknt/react-schema-form). By default, mobx-schema-form uses [React-Toolbox](http://react-toolbox.com/) widgets instead of material-ui and wires up the widgets to work with [MobX FormStore](https://alexhisen.gitbooks.io/mobx-forms/formstore-overview.html). It also adds some improvements primarily in the area of validation.
+mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [react-schema-form](https://github.com/networknt/react-schema-form). By default, mobx-schema-form uses [React-Toolbox](http://react-toolbox.io/) widgets instead of material-ui and wires up the widgets to work with [MobX FormStore](https://alexhisen.gitbooks.io/mobx-forms/formstore-overview.html). It also adds some improvements primarily in the area of validation.
 
 ## Features
 
@@ -19,13 +19,17 @@ mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [r
 * Easy styling/customization of each widget on a per-field basis
 * Provides facilities for form-wide validation \(i.e. of required fields when you hit the Save button\) in addition to intelligent real-time field-level validation.
 * Fields that are currently not rendered \(based on their conditions\) are omitted from form-wide validation.
+* \(NEW in v1.5\) When fields stop being rendered based on their conditions they can optionally be set to null or other value.
 * In addition to the built-in schema/[tv4](https://github.com/geraintluff/tv4)-based validation, supports custom validations and server-returned validation errors.
 * Values from text, etc input fields have their white space trimmed on blur and non-numeric characters cannot be entered into form fields with schema type of numeric/integer \(but negative integers and decimals such as 1.01 can still be keyed-in correctly\).
 * Radios or Dropdowns can be used for nullable Boolean values with automatic datatype conversion from strings such as 'off, no, false' to false and empty strings to null.
+* \(NEW in v1.6\) When using React 16, you can have mobx-schema-form just return the array of rendered fields without a wrapper.
+* \(NEW in v1.8\) MobxSchemaForm accepts optional child component to which fields are passed as children, so it can further wrap each field if necessary
+* \(NEW in v1.9\) Text/Number inputs can be formatted (as-you-type) with a mask supported by [react-input-mask](https://github.com/sanniassin/react-input-mask)
 
 ## Requirements
 
-mobx-schema-form requires React, [MobX](https://mobx.js.org/) 2.2+ or 3.x, mobx-react 3.5+ or 4.x and expects models to be instances of [MobX FormStore](https://alexhisen.gitbooks.io/mobx-forms/formstore-overview.html) or objects in the [modelShape](https://github.com/alexhisen/mobx-schema-form/blob/master/src/schemaFormPropTypes.js#L51) \(with at minimum data and dataErrors object properties\). Unlike FormStore, which is published as a UMD module to NPM, mobx-schema-form is published in CommonJS ES5 format. In addition, default use of MobxSchemaForm requires React-Toolbox, which in turn requires your environment to be able to load SASS (React-Toolbox 1.x) or PostCSS/cssnext (React-Toolbox 2.x) files via require/import - i.e. properly configured webpack.
+mobx-schema-form requires React 15 or 16, [MobX](https://mobx.js.org/) 2.2+, 3.x, 4.x or 5.x, mobx-react 3.5+, 4.x or 5.x and expects models to be instances of [MobX FormStore](https://alexhisen.gitbooks.io/mobx-forms/formstore-overview.html) or objects in the [modelShape](https://github.com/alexhisen/mobx-schema-form/blob/master/src/schemaFormPropTypes.js#L51) \(with at minimum data and dataErrors object properties\). Unlike FormStore, which is published as a UMD module to NPM, mobx-schema-form is published in CommonJS ES5 format. In addition, default use of MobxSchemaForm requires React-Toolbox, which in turn requires your environment to be able to load SASS (React-Toolbox 1.x) or PostCSS/cssnext (React-Toolbox 2.x) files via require/import - i.e. properly configured webpack.
 
 ## Installation
 
@@ -34,6 +38,8 @@ npm install --save mobx-schema-form
 ```
 
 Note that npm will issue a warning about an unmet peer dependency of material-ui for react-schema-form. You can safely ignore it. The portion of react-schema-form we use does not require material-ui.
+
+> As of v1.7, react-toolbox is now a peer dependency, so you must install it yourself with npm install react-toolbox.
 
 ## Minimal Usage Example
 

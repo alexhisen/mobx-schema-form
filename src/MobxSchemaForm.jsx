@@ -4,61 +4,10 @@
  */
 import PropTypes from 'prop-types';
 import React from 'react';
-import utils from 'react-schema-form/lib/utils';
-import { observer } from 'mobx-react';
-
-import { getFieldKey } from './validate';
 import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
+import SchemaForm from './SchemaForm';
 
-@observer class MobxSchemaForm extends React.Component {
-  componentWillMount() {
-    this.props.model.fields = {};
-
-    const options = this.props.options || this.props.option;
-    if (options && options.validators) {
-      // merge to allow different instances of MobxSchemaForm to maintain their own validators in the store
-      this.props.model.validators = Object.assign((this.props.model.validators || {}), options.validators);
-    }
-  }
-
-  componentWillUnmount() {
-    delete this.props.model.fields;
-  }
-
-  onModelChange = (formField, value) => {
-    const asString = true;
-    const key = getFieldKey(formField, asString);
-    if (!key) {
-      this.props.onModelChange && this.props.onModelChange(formField, value);
-      return;
-    }
-
-    this.props.onModelChange && this.props.onModelChange(key, value);
-
-    // since we unmount first before children unmount, must check if fields still exists
-    if (!this.props.model.fields) return;
-    if (value === undefined) {
-      // field has been removed from form
-      delete this.props.model.fields[key];
-    } else {
-      this.props.model.fields[key] = formField;
-    }
-  };
-
-  builder(form, model, index, onChange, mapper) {
-    const Field = mapper[form.type];
-    if (!Field) {
-      console.warn(`Skipping field - unmapped type: '${form.type}' in ${getFieldKey(form) || `field ${index}`}`); // eslint-disable-line no-console
-      return null;
-    }
-    /* eslint-disable no-eval */
-    if (form.condition && eval(form.condition) === false) {
-      return null;
-    }
-    /* eslint-enable */
-    return (<Field model={model} form={form} key={index} onChange={onChange} mapper={mapper} builder={this.builder} />);
-  }
-
+class MobxSchemaForm extends React.Component {
   render() {
     let mapper;
     if (this.props.mergeMapper === false) {
@@ -98,16 +47,12 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
       };
     }
 
-    const merged = utils.merge(this.props.schema, this.props.form, this.props.ignore, this.props.options || this.props.option);
-    // console.log('SchemaForm merged = ', JSON.stringify(merged, undefined, 2));
-
-    const forms = merged.map((form, index) => this.builder(form, this.props.model, index, this.onModelChange, mapper));
-
-    return (<div style={{ width: '100%' }} className="SchemaForm">{forms}</div>);
+    return (<SchemaForm {...this.props} mapper={mapper} />);
   }
 }
 
 MobxSchemaForm.propTypes = {
+  className: PropTypes.string,
   mapper: mapperShape,
   model: modelShape,
   schema: PropTypes.shape({
@@ -126,13 +71,15 @@ MobxSchemaForm.propTypes = {
   }),
   /* @deprecated For compatibility with react-schema-form */
   option: PropTypes.shape({
-    suppressPropertyTitles: PropTypes.bool,
+    supressPropertyTitles: PropTypes.bool,  /* yes, they have it misspelled like that - we convert to their spelling */
     formDefaults: formShape,
     validators: PropTypes.objectOf(PropTypes.func),
   }),
   ignore: PropTypes.objectOf(PropTypes.bool), // list of paths in schema to ignore (sans root level name)
   onModelChange: PropTypes.func,
   mergeMapper: PropTypes.bool,
+  asArray: PropTypes.bool,
+  children: PropTypes.element,
 };
 
 export default MobxSchemaForm;

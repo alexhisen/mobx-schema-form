@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Button } from 'react-toolbox/lib/button';
+import Button from 'react-toolbox/lib/button';
 
 import { validateAndSave } from './validate';
 import { modelShape } from './schemaFormPropTypes';
@@ -17,7 +17,9 @@ import { modelShape } from './schemaFormPropTypes';
       if (e.isDefaultPrevented()) return;
     }
 
-    const isValid = await validateAndSave(this.props.model, this.props.options, e);
+    e.persist(); // so that it can be used by onSave / onInvalid callbacks after the async save
+
+    const isValid = await validateAndSave(this.props.model, this.props.options, this.props.disableWhileSaving && e);
 
     if (isValid) {
       if (typeof this.props.onSave === 'function') {
@@ -32,11 +34,11 @@ import { modelShape } from './schemaFormPropTypes';
   };
 
   render() {
-    const { model, options, disabled, onClick, onSave, onInvalid, ...others } = this.props; // eslint-disable-line no-unused-vars
+    const { model, options, onClick, onSave, onInvalid, disableWhileSaving, ...others } = this.props; // eslint-disable-line no-unused-vars
     return (
       <Button
-        raised
         primary
+        raised={!this.props.disabled}
         flat={this.props.disabled}
         onClick={this.onClick}
         {...others}
@@ -44,6 +46,10 @@ import { modelShape } from './schemaFormPropTypes';
     );
   }
 }
+
+SaveButton.defaultProps = {
+  disableWhileSaving: true,
+};
 
 SaveButton.propTypes = {
   model: modelShape,
@@ -57,6 +63,7 @@ SaveButton.propTypes = {
   onSave: PropTypes.func,
   onInvalid: PropTypes.func,
   disabled: PropTypes.bool,
+  disableWhileSaving: PropTypes.bool,
 };
 
 export default SaveButton;

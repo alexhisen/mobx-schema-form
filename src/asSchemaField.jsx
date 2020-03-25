@@ -7,6 +7,17 @@ import { getFieldKey, getFieldValue, validateField, getValidationMessage } from 
 import { modelShape, formShape, mapperShape } from './schemaFormPropTypes';
 
 const asSchemaField = (ComposedComponent, fieldType) => observer(class extends React.Component {
+  static propTypes = {
+    form: formShape,
+    model: modelShape,
+    onChange: PropTypes.func,
+    mapper: mapperShape,
+    /* Not used:
+    builder: PropTypes.func,
+    */
+  };
+
+  static displayName = 'SchemaField';
 
   constructor(props) {
     super(props);
@@ -43,7 +54,10 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
         utils.selectOrSet(key, this.props.model.dataErrors, null);
         this.props.onChange(this.props.form);
       })();
+      return;
     }
+
+    this.props.onChange(this.props.form);
   }
 
   /**
@@ -53,11 +67,17 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
    * @param {Event} [e] - Event object for React-Toolbox widgets and from onBlur event
    */
   onChangeValidate = (val, e) => {
+    const event = e || val;
     let value = (val && val.target) ? val.target.value : val;
 
-    const strict = (e && e.type === 'blur');
+    if (event && event.type === 'focus') {
+      // react-input-mask calls onChange before the focus event completes.
+      // this will set beingEdited to true and avoid premature validation:
+      this.onFocus();
+    }
 
     if (this.props.form.schema && this.props.form.schema.type.match(/integer|number/) && typeof value !== 'number') {
+      const strict = (event && event.type === 'blur');
       if (!value || strict) {
         if (this.state.valueAsString) {
           // clear any temporary string representation
@@ -97,8 +117,8 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
           this.setState({ valueAsString });
         }
       }
-    } else if (val && val.target && this.props.form.schema && this.props.form.schema.type === 'boolean') {
-      value = val.target.checked;
+    } else if (event && event.target && this.props.form.schema && this.props.form.schema.type === 'boolean') {
+      value = event.target.checked;
     }
 
     if (this.props.form.schema && this.props.form.schema.type === 'boolean' && value !== null && typeof value !== 'boolean') {
@@ -158,8 +178,9 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
         const trimmed = value.trim();
 
         if (value !== trimmed || !this.valueEntered || this.initialValue || hasError || this.state.valueAsString) {
-          this.valueEntered = true;
+          this.valueEntered = true; // this must be true for validateField() to actually be called
           this.onChangeValidate(trimmed, e);
+          this.valueEntered = !!trimmed; // if value was cleared, resets behavior for next time
         }
       }
     }
@@ -201,8 +222,8 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
         formField={form}
         value={value}
         error={error}
-        disabled={model.status && model.status.isReadOnly}
-        readOnly={model.status && model.status.isReadOnly}
+        disabled={!!(model.status && model.status.isReadOnly)}
+        readOnly={!!(model.status && model.status.isReadOnly)}
         onChange={this.onChangeValidate}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
@@ -223,16 +244,6 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
 
     return composedComponent;
   }
-
-  static propTypes = {
-    form: formShape,
-    model: modelShape,
-    onChange: PropTypes.func,
-    mapper: mapperShape,
-    builder: React.PropTypes.func,
-  };
-
-  static displayName = 'SchemaField';
 });
 
 export default asSchemaField;

@@ -135,7 +135,8 @@ function runCustomValidations(formField, model, value) {
  * and returns the errorMessage string if any plus places it into model.dataErrors.
  * Validation is done using react-schema-form validate mechanism
  * with added validationMessage codes/templates strings handling like in the angular version of schema-form
- * (null-valued number and string-type fields regardless of form-type are also handled correctly),
+ * (null-valued number, string and object (i.e. date)-type fields regardless of form-type are also handled correctly
+ * and formfields of type=tel with a defined mask have only their digits passed to validation),
  * plus with custom validations defined in the formField - see runCustomValidations().
  * If value is undefined, just sets the corresponding model.dataErrors key to null.
  * @param {Object} formField - formShape object
@@ -148,8 +149,10 @@ function validateField(formField, model, value) {
 
   if (value !== undefined) {
     let validationValue = value;
-    if (value === null && formField.schema && formField.schema.type.match(/string|number|integer/)) {
+    if (value === null && formField.schema && formField.schema.type.match(/string|number|integer|object/)) {
       validationValue = undefined;
+    } else if (value && formField.mask && formField.type === 'tel') {
+      validationValue = String(value).replace(/[^0-9]/g, '');
     }
     const validationResult = utils.validate(formField, validationValue);
 
@@ -216,6 +219,7 @@ function validateForm(fields, model, onlyWithValues = false) {
 
 /**
  * Validates all the fields in props.model.fields and if no validation errors, calls model.save()
+ * Will set disabled DOM attribute on the event.target while saving, then clear it if event object is passed.
  * @param {Object} model - modelShape object with save() method
  * @param {Object} [options] - passed to model.save() method
  * @param {Event} [e] - event object (i.e. from click or submit event)
