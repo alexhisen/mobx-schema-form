@@ -41,7 +41,26 @@ const schemaJson = {
       "optional_date": {
         "title": "Optional Date",
         "type": "object"
-      }
+      },
+      "country": {
+        "title": "Country",
+        "type": "string",
+        "enum": [
+          "Canada",
+          "USA"
+        ],
+        "default": "USA"
+      },
+      "state": {
+        "title": "State",
+        "type": "string",
+        "modelKey": "region"
+      },
+      "province": {
+        "title": "Province",
+        "type": "string",
+        "modelKey": "region"
+      },
     },
     "required": ["email", "required_date"]
   },
@@ -62,12 +81,25 @@ const schemaJson = {
     {
       "key": "optional_date",
       "type": "date"
-    }
+    },
+    "country",
+    {
+      "key": "state",
+      "type": "text",
+      "condition": "model.data.country === 'USA'"
+    },
+    {
+      "key": "province",
+      "type": "text",
+      "condition": "model.data.country === 'Canada'"
+    },
   ]
 };
 /* eslint-enable */
 
 const mapper = {
+  text: asSchemaField(function(){ return (<span />); }),
+  select: asSchemaField(function(){ return (<span />); }),
   email: asSchemaField(function(){ return (<span />); }),
   date: asSchemaField(function(){ return (<span />); }),
   password: asSchemaField(function(){ return (<span />); }),
@@ -81,19 +113,51 @@ const Form = ({ name, children }) => {
 };
 
 describe('Mounted Form', function () {
-  const store = new FormStore({ server: { get: function(){}, set: function(){} } }, { email: null, required_date: null, optional_date: null });
-  mount(<SchemaForm schema={schemaJson.schema} form={schemaJson.form} model={store} mapper={mapper}><Form name="test" /></SchemaForm>);
+  const store = new FormStore(
+    {
+      server: {
+        get: function(){},
+        set: function(){}
+      }
+    },
+    {
+      email: null,
+      password: null,
+      required_date: null,
+      optional_date: null,
+      country: null,
+      region: null,
+    }
+  );
 
-  // the password field is not rendered due to its condition depending on non-null email, hence 3 fields, not 4.
+  mount(
+    <SchemaForm schema={schemaJson.schema} form={schemaJson.form} model={store} mapper={mapper}>
+      <Form name="test" />
+    </SchemaForm>
+  );
+
+  // the password field is not rendered due to its condition depending on non-null email,
+  // and either state or province is mounted but not both, hence 5 fields, not 6 or 7.
   describe('Mounted Child component', function () {
-    it('should receive 3 fields as children', () => {
-      expect(fieldCount).to.be.equal(3);
+    it('should receive 5 fields as children', () => {
+      expect(fieldCount).to.be.equal(5);
     });
   });
 
   describe('Model Fields when mounted', function () {
-    it('should have 3 keys', () => {
-      expect(Object.keys(store.fields).length).to.be.equal(3);
+    it('should have 5 keys', () => {
+      expect(Object.keys(store.fields).length).to.be.equal(5);
+    });
+  });
+
+  describe('Model Fields are updated when alternate field for same model key is mounted', function () {
+    it('field for modelKey should be as set with default', () => {
+      expect(store.fields.region.key[0]).to.be.equal('state');
+    });
+
+    it('after setting model value, field should be the alternate based on condition', () => {
+      store.data.country = 'Canada';
+      expect(store.fields.region.key[0]).to.be.equal('province');
     });
   });
 
@@ -117,7 +181,23 @@ describe('Mounted Form', function () {
 });
 
 describe('Model Fields when unmounted', function () {
-  const store = new FormStore({ server: { get: function(){}, set: function(){} } }, { email: null, required_date: null, optional_date: null });
+  const store = new FormStore(
+    {
+      server: {
+        get: function(){},
+        set: function(){}
+      }
+    },
+    {
+      email: null,
+      password: null,
+      required_date: null,
+      optional_date: null,
+      country: null,
+      region: null,
+    }
+  );
+
   const mountedForm = mount(<SchemaForm schema={schemaJson.schema} form={schemaJson.form} model={store} mapper={mapper}/>);
   mountedForm.unmount();
 

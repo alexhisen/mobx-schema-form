@@ -13,7 +13,7 @@ mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [r
 ## Features
 
 * React-Toolbox is faster and lighter than Material-UI and uses easily themable/customizable CSS Modules instead of inline styles.
-* Declarative form rendering and validation with added support for conditionally-rendered [alternate widgets for the same model property](https://alexhisen.gitbooks.io/mobx-forms/data-property-schema.html#modelkey).
+* Declarative form rendering and validation with added support for conditionally-rendered [alternate widgets for the same model property](https://alexhisen.gitbooks.io/mobx-forms/data-property-schema.html#modelkey) _(this works correctly in version 1.9.8+)_.
 * Virtually zero code for a complete implementation
 * Mobx-reactive conditional rendering of fields or groups of fields in fieldsets
 * Easy styling/customization of each widget on a per-field basis

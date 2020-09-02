@@ -6,15 +6,17 @@ import ObjectPath from 'objectpath';
 /**
  * Returns the modelKey (or key) as an array produced by ObjectPath.parse
  * or if asString is true as an underscore-joined string.
+ * Always returns just the key regardless of modelKey if ignoreModelKey == true
  * @param {Object} formField - formShape object
  * @param {Boolean} [asString]
+ * @param {Boolean} [ignoreModelKey]
  * @returns {Array|String|undefined}
  */
-function getFieldKey(formField, asString = false) {
+function getFieldKey(formField, asString = false, ignoreModelKey) {
   if (!formField || !formField.key) {
     return undefined;
   }
-  let key = (formField.schema && formField.schema.modelKey) || formField.key;
+  let key = (!ignoreModelKey && formField.schema && formField.schema.modelKey) || formField.key;
   if (typeof key === 'string') {
     key = ObjectPath.parse(key);
   }

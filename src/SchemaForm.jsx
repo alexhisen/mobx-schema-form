@@ -32,17 +32,23 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
   onModelChange = (formField, value) => {
     const model = this.props.model; // this variable name is required for evaling form.condition.
     const asString = true;
-    const key = getFieldKey(formField, asString);
-    if (!key) {
+    const modelKey = getFieldKey(formField, asString);
+    if (!modelKey) {
       this.props.onModelChange && this.props.onModelChange(formField, value);
       return;
     }
 
-    this.props.onModelChange && this.props.onModelChange(key, value);
+    this.props.onModelChange && this.props.onModelChange(modelKey, value);
 
-    // since we unmount first before children unmount, must check if fields still exists
+    const ignoreModelKey = true;
+    const fieldKey = getFieldKey(formField, asString, ignoreModelKey);
+
+    // when whole form is unmounting
+    // just remove this field from model.fields and bail out.
     if (this.unmounting) {
-      delete model.fields[key];
+      if (model.fields && fieldKey === getFieldKey(model.fields[modelKey], asString, ignoreModelKey)) {
+        delete model.fields[modelKey];
+      }
       return;
     }
 
@@ -52,22 +58,25 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
       /* eslint-disable no-eval */
       if (form.falseConditionValue !== undefined && form.condition && eval(form.condition) === false) {
         action(() => {
-          const fieldKey = getFieldKey(form);
-          utils.selectOrSet(fieldKey, model.data, form.falseConditionValue);
-          utils.selectOrSet(fieldKey, model.dataErrors, null);
+          const key = getFieldKey(form);
+          utils.selectOrSet(key, model.data, form.falseConditionValue);
+          utils.selectOrSet(key, model.dataErrors, null);
         })();
       }
       /* eslint-enable */
-      delete model.fields[key];
+      if (fieldKey === getFieldKey(model.fields[modelKey], asString, ignoreModelKey)) {
+        delete model.fields[modelKey];
+      }
     } else {
-      model.fields[key] = formField;
+      model.fields[modelKey] = formField;
     }
   };
 
   // IMPORTANT: form and model variable names must not be changed to not break form.condition evals
   builder(form, model, index, onChange, mapper) {
     const asString = true;
-    const key = getFieldKey(form, asString);
+    const ignoreModelKey = true;
+    const key = getFieldKey(form, asString, ignoreModelKey);
     const Field = mapper[form.type];
     if (!Field) {
       console.warn(`Skipping field - unmapped type: '${form.type}' in ${key || `field ${index}`}`); // eslint-disable-line no-console
