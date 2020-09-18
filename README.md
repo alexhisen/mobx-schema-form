@@ -18,6 +18,7 @@ mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [r
 * Mobx-reactive conditional rendering of fields or groups of fields in fieldsets
 * Easy styling/customization of each widget on a per-field basis
 * Provides facilities for form-wide validation \(i.e. of required fields when you hit the Save button\) in addition to intelligent real-time field-level validation.
+* \(NEW in v1.10\) Allows fields to be conditionally required using the new requiredCondition property in the form field metadata.
 * Fields that are currently not rendered \(based on their conditions\) are omitted from form-wide validation.
 * \(NEW in v1.5\) When fields stop being rendered based on their conditions they can optionally be set to null or other value.
 * In addition to the built-in schema/[tv4](https://github.com/geraintluff/tv4)-based validation, supports custom validations and server-returned validation errors.

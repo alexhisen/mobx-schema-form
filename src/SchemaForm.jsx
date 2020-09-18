@@ -86,6 +86,14 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
     if (form.condition && eval(form.condition) === false) {
       return null;
     }
+    if (form.requiredCondition) {
+      Object.defineProperty(form, 'required', {
+        configurable: true, // allows re-definition
+        get: () => {
+          return eval(form.requiredCondition);
+        },
+      });
+    }
     /* eslint-enable */
     return (<Field model={model} form={form} key={key || index} onChange={onChange} mapper={mapper} builder={this.builder} />);
   }

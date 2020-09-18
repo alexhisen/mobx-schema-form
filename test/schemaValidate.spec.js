@@ -40,7 +40,10 @@ const schemaJson = {
       },
       "optional_date": {
         "title": "Optional Date",
-        "type": "object"
+        "type": "object",
+        "validationMessage": {
+          "302": "optional_date must be specified if required_date year is 2020"
+        }
       },
       "country": {
         "title": "Country",
@@ -72,7 +75,7 @@ const schemaJson = {
     {
       "key": "password",
       "type": "password",
-      "condition": "model.data.email !== null",
+      "condition": "model.data.email !== null"
     },
     {
       "key": "required_date",
@@ -80,7 +83,8 @@ const schemaJson = {
     },
     {
       "key": "optional_date",
-      "type": "date"
+      "type": "date",
+      "requiredCondition": "model.data.required_date && model.data.required_date.getFullYear() === 2020"
     },
     "country",
     {
@@ -177,6 +181,13 @@ describe('Mounted Form', function () {
         expect(validateField(store.fields.optional_date, store, store.data.optional_date)).to.be.null;
       });
     });
+    describe('when optional date is conditionally required', function () {
+      it('should return the require (302) validationMessage', () => {
+        store.data.required_date = new Date('2020-02-02');
+        expect(validateField(store.fields.optional_date, store, store.data.optional_date)).to.be.equal('optional_date must be specified if required_date year is 2020');
+      });
+    });
+
   });
 });
 
