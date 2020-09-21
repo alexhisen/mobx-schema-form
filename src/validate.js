@@ -174,7 +174,7 @@ function validateField(formField, model, value) {
 
   action(() => {
     // update value
-    if (value !== undefined) {
+    if (value !== undefined && !formField.readOnly) {
       utils.selectOrSet(
         getFieldKey(formField),
         model.data,
@@ -198,7 +198,7 @@ function validateField(formField, model, value) {
  * @param {Object} model - modelShape object
  * @param {Boolean} onlyWithValues - if true, skips validation on fields that have no value (i.e. undefined or null)
  *                                 - this is useful to only re-populate the model with defaults that get lost on a store refresh
- * @returns {Boolean}
+ * @returns {Boolean} true if all fields validated, false if any did not
  */
 function validateForm(fields, model, onlyWithValues = false) {
   let isValid = true;

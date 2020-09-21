@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-15';
 
 import React from 'react';
 import FormStore from 'mobx-form-store';
-import { validateField, asSchemaField } from '../lib';
+import { validateForm, validateField, asSchemaField } from '../lib';
 import SchemaForm from '../lib/SchemaForm';
 
 configure({ adapter: new Adapter() });
@@ -44,6 +44,10 @@ const schemaJson = {
         "validationMessage": {
           "302": "optional_date must be specified if required_date year is 2020"
         }
+      },
+      "computed_date": {
+        "title": "Computed Date",
+        "type": "object"
       },
       "country": {
         "title": "Country",
@@ -85,6 +89,11 @@ const schemaJson = {
       "key": "optional_date",
       "type": "date",
       "requiredCondition": "model.data.required_date && model.data.required_date.getFullYear() === 2020"
+    },
+    {
+      "key": "computed_date",
+      "type": "date",
+      "readOnly": true
     },
     "country",
     {
@@ -133,6 +142,11 @@ describe('Mounted Form', function () {
       region: null,
     }
   );
+  Object.defineProperty(store.data, 'computed_date', {
+    get: function() {
+      return store.data.required_date && new Date(store.data.required_date.getTime() + 1000*3600*24);
+    },
+  });
 
   mount(
     <SchemaForm schema={schemaJson.schema} form={schemaJson.form} model={store} mapper={mapper}>
@@ -141,16 +155,16 @@ describe('Mounted Form', function () {
   );
 
   // the password field is not rendered due to its condition depending on non-null email,
-  // and either state or province is mounted but not both, hence 5 fields, not 6 or 7.
+  // and either state or province is mounted but not both, hence 6 fields, not 7 or 8.
   describe('Mounted Child component', function () {
-    it('should receive 5 fields as children', () => {
-      expect(fieldCount).to.be.equal(5);
+    it('should receive 6 fields as children', () => {
+      expect(fieldCount).to.be.equal(6);
     });
   });
 
   describe('Model Fields when mounted', function () {
-    it('should have 5 keys', () => {
-      expect(Object.keys(store.fields).length).to.be.equal(5);
+    it('should have 6 keys', () => {
+      expect(Object.keys(store.fields).length).to.be.equal(6);
     });
   });
 
@@ -185,6 +199,14 @@ describe('Mounted Form', function () {
       it('should return the require (302) validationMessage', () => {
         store.data.required_date = new Date('2020-02-02');
         expect(validateField(store.fields.optional_date, store, store.data.optional_date)).to.be.equal('optional_date must be specified if required_date year is 2020');
+      });
+    });
+    describe('when all required fields have valid values', function () {
+      it('form should validate and not error on computed field marked as readOnly', () => {
+        store.data.email = 'example@domain.com';
+        store.data.required_date = new Date('2010-02-02');
+        expect(validateForm(store.fields, store)).to.be.true;
+        expect(store.status.errors.length).to.equal(0);
       });
     });
 

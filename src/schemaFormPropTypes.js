@@ -50,6 +50,7 @@ export const formShape = PropTypes.shape({
   validations: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.string])),
   mask: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.any)]), // array is for future versions of React-Input-Mask
   maskProps: PropTypes.object, /* props passed as-is to the React-Input-Mask component */
+  readOnly: PropTypes.bool,
 }).isRequired;
 
 export const modelShape = PropTypes.shape({

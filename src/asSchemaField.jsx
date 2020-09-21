@@ -215,6 +215,8 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
       error = getValidationMessage(error, form, model, value);
     }
 
+    const readOnly = !!(model.status && model.status.isReadOnly) || form.readOnly;
+
     const composedComponent = (
       <ComposedComponent
         name={form.key.join('.')}
@@ -222,8 +224,8 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
         formField={form}
         value={value}
         error={error}
-        disabled={!!(model.status && model.status.isReadOnly)}
-        readOnly={!!(model.status && model.status.isReadOnly)}
+        disabled={readOnly}
+        readOnly={readOnly}
         onChange={this.onChangeValidate}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
