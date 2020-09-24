@@ -201,6 +201,14 @@ describe('Mounted Form', function () {
         expect(validateField(store.fields.optional_date, store, store.data.optional_date)).to.be.equal('optional_date must be specified if required_date year is 2020');
       });
     });
+    describe('when optional date is no longer required', function () {
+      it('it should immediately clear its error message', () => {
+        store.data.required_date = new Date('2020-02-02');
+        validateField(store.fields.optional_date, store, store.data.optional_date);
+        store.data.required_date = new Date('2010-02-02');
+        expect(store.dataErrors.optional_date).to.be.null;
+      });
+    });
     describe('when all required fields have valid values', function () {
       it('form should validate and not error on computed field marked as readOnly', () => {
         store.data.email = 'example@domain.com';

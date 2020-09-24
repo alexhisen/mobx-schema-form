@@ -25,6 +25,7 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
     this.beingEdited = false;
     this.valueEntered = false;
     this.initialValue = null;
+    this.wasRequired = false;
 
     this.state = {
       valueAsString: '',
@@ -32,6 +33,8 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
   }
 
   componentDidMount() {
+    this.wasRequired = this.props.form.required;
+
     // update value in the model to a possible schema default
     // and validate it
     action(() => {
@@ -41,6 +44,15 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
       }
       this.props.onChange(this.props.form, value);
     })();
+  }
+
+  componentDidUpdate() {
+    if (this.wasRequired && !this.props.form.required && this.getError()) {
+      const value = this.getValue();
+      validateField(this.props.form, this.props.model, value);
+      this.props.onChange(this.props.form, value);
+    }
+    this.wasRequired = this.props.form.required;
   }
 
   componentWillUnmount() {
