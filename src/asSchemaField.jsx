@@ -246,8 +246,15 @@ const asSchemaField = (ComposedComponent, fieldType) => observer(class extends R
 
     if (mapper.fieldWrapper) {
       const FieldWrapper = mapper.fieldWrapper;
+      const isCheckboxOrSwitch = ['checkbox', 'switch'].indexOf(fieldType || form.type) !== -1;
       return (
-        <FieldWrapper formField={form} fieldType={fieldType} hasError={!!error} className={form.className}>
+        <FieldWrapper
+          formField={form}
+          fieldType={fieldType}
+          hasError={!!error}
+          checked={isCheckboxOrSwitch ? !!value : undefined}
+          className={form.className}
+        >
           {composedComponent}
         </FieldWrapper>
       );
