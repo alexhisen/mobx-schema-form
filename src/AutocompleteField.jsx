@@ -32,10 +32,11 @@ class AutocompleteField extends React.Component {
     } else {
       source = Array.isArray(value) ? value.map(asString) : [value];
     }
+    // Autocomplete component incorrectly checks for typeof value which returns object for null, so give it [] instead
     return (
       <Autocomplete
         {...others}
-        value={value}
+        value={value || []}
         onChange={this.onChange}
         label={formField.description}
         source={source}
