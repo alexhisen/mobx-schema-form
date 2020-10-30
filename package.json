@@ -1,6 +1,6 @@
 {
   "name": "mobx-schema-form",
-  "version": "1.13.0",
+  "version": "1.13.1",
   "description": "Connects MobX FormStore, React-Schema-Form and React-Toolbox",
   "main": "./lib",
   "scripts": {
