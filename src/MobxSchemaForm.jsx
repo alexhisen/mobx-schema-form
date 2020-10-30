@@ -21,6 +21,7 @@ class MobxSchemaForm extends React.Component {
       const RadiosField = require('./RadiosField');
       const Fieldset = require('./Fieldset');
       const DropdownField = require('./DropdownField');
+      const AutocompleteField = require('./AutocompleteField');
       const BoolLink = require('./BoolLink');
       const SliderField = require('./SliderField');
       const Help = require('./Help');
@@ -40,6 +41,8 @@ class MobxSchemaForm extends React.Component {
         radios: RadiosField,
         fieldset: Fieldset,
         select: DropdownField,
+        multiselect: AutocompleteField,
+        autocomplete: AutocompleteField,
         link: BoolLink,
         range: SliderField,
         help: Help,
