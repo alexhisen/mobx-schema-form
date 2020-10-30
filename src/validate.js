@@ -1,5 +1,5 @@
 import utils from 'react-schema-form/lib/utils';
-import { action } from 'mobx';
+import { action, isObservableArray } from 'mobx';
 import template from 'lodash.template';
 import ObjectPath from 'objectpath';
 
@@ -31,7 +31,10 @@ function getFieldKey(formField, asString = false, ignoreModelKey) {
  * @param {Object} model - modelShape object
  */
 function getFieldValue(formField, model) {
-  const value = utils.selectOrSet(getFieldKey(formField), model.data);
+  let value = utils.selectOrSet(getFieldKey(formField), model.data);
+  if (isObservableArray(value)) {
+    value = value.slice();
+  }
 
   // check if there is a default value
   if (value === null || value === undefined) {
