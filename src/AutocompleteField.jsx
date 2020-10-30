@@ -39,10 +39,12 @@ const AutocompleteField = (props) => {
 AutocompleteField.propTypes = {
   formField: formShape,
   value: PropTypes.oneOfType([
-    PropTypes.arrayOf([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    ),
     PropTypes.string,
     PropTypes.number,
   ]),
