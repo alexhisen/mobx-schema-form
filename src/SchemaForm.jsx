@@ -94,6 +94,14 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
         },
       });
     }
+    if (form.readOnlyCondition && !Object.hasOwnProperty.call(form, 'readOnly')) {
+      Object.defineProperty(form, 'readOnly', {
+        configurable: true, // allows re-definition
+        get: () => {
+          return eval(form.readOnlyCondition);
+        },
+      });
+    }
     /* eslint-enable */
     return (<Field model={model} form={form} key={key || index} onChange={onChange} mapper={mapper} builder={this.builder} />);
   }

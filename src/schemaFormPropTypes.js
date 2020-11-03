@@ -40,6 +40,7 @@ export const formShape = PropTypes.shape({
   falseConditionValue: PropTypes.any,
   mobxCondition: PropTypes.string,
   requiredCondition: PropTypes.string,
+  readOnlyCondition: PropTypes.string,
   className: PropTypes.string,
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -67,6 +68,7 @@ export const modelShape = PropTypes.shape({
     isInProgress: PropTypes.bool,
     canSave: PropTypes.bool,
     hasChanges: PropTypes.bool,
+    mustCreate: PropTypes.bool,
   }),
   fields: PropTypes.object, /* exists only while a SchemaForm is rendered */
   validators: PropTypes.objectOf(PropTypes.func), /* may not exist until a SchemaForm is rendered */
