@@ -28,7 +28,7 @@ mobx-schema-form is a syntax-compatible wrapper around the low-level utils of [r
 * \(NEW in v1.8\) MobxSchemaForm accepts optional child component to which fields are passed as children, so it can further wrap each field if necessary
 * \(NEW in v1.9\) Text/Number inputs can be formatted (as-you-type) with a mask supported by [react-input-mask](https://github.com/sanniassin/react-input-mask)
 * \(NEW in v1.11\) Fields can be marked as readOnly:true in the form field metadata, which allows them to use computed (getter) properties in the model (supported in [MobX FormStore](https://alexhisen.gitbooks.io/mobx-forms/formstore-overview.html) 1.3.3+\).
-* \(NEW in v1.14\) Alternatively fields can have a readOnlyCondition in the form field metadata to be conditionally read-only.
+* \(NEW in v1.14.1\) Alternatively fields can have a readOnlyCondition in the form field metadata to be conditionally read-only.
 
 
 ## Requirements

@@ -94,7 +94,7 @@ import { formShape, modelShape, mapperShape } from './schemaFormPropTypes';
         },
       });
     }
-    if (form.readOnlyCondition && !Object.hasOwnProperty.call(form, 'readOnly')) {
+    if (form.readOnlyCondition) {
       Object.defineProperty(form, 'readOnly', {
         configurable: true, // allows re-definition
         get: () => {
