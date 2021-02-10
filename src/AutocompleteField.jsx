@@ -17,7 +17,8 @@ class AutocompleteField extends React.Component {
   };
 
   render() {
-    const { formField, value, onChange, ...others } = this.props; // eslint-disable-line no-unused-vars
+    const { formField, onChange, ...others } = this.props; // eslint-disable-line no-unused-vars
+    let value = this.props.value;
     let source = {};
     if (Array.isArray(formField.titleMap)) {
       formField.titleMap.forEach((item) => {
@@ -32,15 +33,21 @@ class AutocompleteField extends React.Component {
     } else {
       source = Array.isArray(value) ? value.map(asString) : [value];
     }
-    // Autocomplete component incorrectly checks for typeof value which returns object for null, so give it [] instead
+
+    // Autocomplete component incorrectly checks for typeof value which returns object for null,
+    // so give it [] for multiple-valued components instead (or "" if single-valued).
+    const multiple = formField.type === 'multiselect' || formField.schema.type === 'array';
+    if (value === null) {
+      value = multiple ? [] : '';
+    }
     return (
       <Autocomplete
         {...others}
-        value={value || []}
+        value={value}
         onChange={this.onChange}
         label={formField.description}
         source={source}
-        multiple={formField.type === 'multiselect' || formField.schema.type === 'array'}
+        multiple={multiple}
         {...formField.props}
       />
     );
